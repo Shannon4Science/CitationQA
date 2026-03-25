@@ -8,7 +8,8 @@ RUN sed -i 's|deb.debian.org|mirrors.tuna.tsinghua.edu.cn|g' /etc/apt/sources.li
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN ARCH=$(dpkg --print-architecture) && \
-    curl -fsSL "https://npmmirror.com/mirrors/node/v20.18.0/node-v20.18.0-linux-${ARCH}.tar.xz" \
+    if [ "$ARCH" = "amd64" ]; then NARCH="x64"; else NARCH="$ARCH"; fi && \
+    curl -fsSL "https://registry.npmmirror.com/-/binary/node/v20.18.0/node-v20.18.0-linux-${NARCH}.tar.xz" \
       | tar -xJ -C /usr/local --strip-components=1 && \
     node --version && npm --version
 
