@@ -27,6 +27,7 @@ variables:
 
 build_image:
   extends: .docker_build
+  timeout: 3h
   rules:
     - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master"
       when: on_success
