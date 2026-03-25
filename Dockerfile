@@ -1,9 +1,9 @@
 FROM docker.shlab.tech/public/python:3.13-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl gnupg git \
+    curl gnupg \
     libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf-2.0-0 \
-    libffi-dev libcairo2 shared-mime-info fonts-noto-cjk && \
+    libffi-dev libcairo2 shared-mime-info fonts-wqy-zenhei && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
