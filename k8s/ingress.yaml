@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - www.cqa.shannon.science
+        - cqa.shannon.science
       secretName: cqa-tls
   rules:
-    - host: www.cqa.shannon.science
+    - host: cqa.shannon.science
       http:
         paths:
           - path: /
