@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CitationQA — Citation Quality Analyzer</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="app-nav">
+            <div class="nav-inner">
+                <div class="nav-left">
+                    <div class="nav-logo">
+                        <div class="logo-mark">
+                            <svg width="20" height="20" viewBox="0 0 48 48" fill="none"><path clip-rule="evenodd" d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor" fill-rule="evenodd"/></svg>
+                        </div>
+                        <span class="logo-text">CitationQA</span>
+                    </div>
+                    <span class="nav-divider">|</span>
+                    <span class="nav-version">Citation Quality Analyzer</span>
+                </div>
+                <div class="nav-right">
+                    <button class="nav-btn" onclick="openSettings()" title="设置">
+                        <span class="material-symbols-outlined">settings</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Step 1: Input -->
+            <section id="step-input" class="step-section active">
+                <div class="hero-block">
+                    <div class="hero-grid-overlay"></div>
+                    <div class="hero-inner">
+                        <div class="hero-badge">
+                            <span class="badge-dot"></span>
+                            SYSTEM READY
+                        </div>
+                        <h1 class="hero-title">论文被引<br>质量分析</h1>
+                        <p class="hero-sub">输入论文标题，系统将自动检索被引论文并进行深度质量评估</p>
+                        <div class="input-group">
+                            <input type="text" id="paper-title" placeholder="输入完整论文标题，例如 Attention Is All You Need" autocomplete="off">
+                            <button id="btn-search" class="btn-brutal" onclick="startAnalysis()">
+                                <span class="btn-text">开始分析</span>
+                                <span class="btn-loading" style="display:none;">分析中...</span>
+                            </button>
+                        </div>
+                        <div id="search-error" class="error-block" style="display:none"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Paper Info -->
+            <section id="step-paper-info" class="step-section" style="display:none">
+                <div class="card-brutal">
+                    <div class="card-header">
+                        <div class="step-tag">02</div>
+                        <h2>论文信息确认</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="paper-info-content" class="info-grid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Citation Selection -->
+            <section id="step-citations" class="step-section" style="display:none">
+                <div class="card-brutal">
+                    <div class="card-header">
+                        <div class="step-tag">03</div>
+                        <h2>被引论文选择</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="citation-info" class="info-banner"></div>
+                        <div id="citation-options" style="display:none">
+                            <div class="option-row">
+                                <button class="btn-brutal" onclick="selectAutoTop100()">自动选择前100篇</button>
+                                <button class="btn-brutal btn-outline" onclick="showManualSelect()">手动选择论文</button>
+                            </div>
+                        </div>
+                        <div id="manual-select" style="display:none">
+                            <div class="select-bar">
+                                <span id="selected-count" class="select-count">已选择: 0/100</span>
+                                <button class="btn-sm" onclick="selectAll()">全选</button>
+                                <button class="btn-sm" onclick="deselectAll()">取消全选</button>
+                                <button class="btn-brutal" onclick="confirmManualSelect()">确认选择</button>
+                            </div>
+                            <div id="citation-list" class="citation-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 4: Analysis Progress -->
+            <section id="step-progress" class="step-section" style="display:none">
+                <div class="card-brutal">
+                    <div class="card-header card-header-dark">
+                        <div class="step-tag step-tag-light">04</div>
+                        <h2>分析进度</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress-block">
+                            <div class="progress-track">
+                                <div id="progress-fill" class="progress-fill" style="width:0%"></div>
+                            </div>
+                            <div class="progress-meta">
+                                <span id="progress-percent" class="progress-pct">0%</span>
+                                <span id="progress-detail" class="progress-stage">准备中...</span>
+                            </div>
+                        </div>
+                        <div id="progress-log" class="log-terminal"></div>
+                        <div class="stats-grid">
+                            <div class="stat-cell">
+                                <div class="stat-label">已分析</div>
+                                <div id="stat-analyzed" class="stat-val">0</div>
+                            </div>
+                            <div class="stat-cell">
+                                <div class="stat-label">获取全文</div>
+                                <div id="stat-fulltext" class="stat-val">0</div>
+                            </div>
+                            <div class="stat-cell">
+                                <div class="stat-label">仅摘要</div>
+                                <div id="stat-abstract" class="stat-val">0</div>
+                            </div>
+                            <div class="stat-cell">
+                                <div class="stat-label">当前阶段</div>
+                                <div id="stat-stage" class="stat-val">-</div>
+                            </div>
+                        </div>
+                        <!-- Scholar enrichment progress -->
+                        <div id="scholar-progress" class="scholar-progress" style="display:none">
+                            <div class="scholar-progress-header">
+                                <span class="material-symbols-outlined">person_search</span>
+                                <span>学者画像补全</span>
+                                <span id="scholar-progress-count" class="scholar-progress-count">0/0</span>
+                            </div>
+                            <div class="scholar-progress-track">
+                                <div id="scholar-progress-fill" class="scholar-progress-fill" style="width:0%"></div>
+                            </div>
+                            <div id="scholar-progress-name" class="scholar-progress-name">准备中...</div>
+                        </div>
+                        <div class="action-row" id="progress-new-analysis" style="display:none">
+                            <button class="btn-brutal btn-outline" onclick="startNewAnalysis()">
+                                <span class="material-symbols-outlined">add</span>
+                                分析其他论文
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 5: Results -->
+            <section id="step-results" class="step-section" style="display:none">
+                <div class="card-brutal">
+                    <div class="card-header card-header-dark">
+                        <div class="step-tag step-tag-light">05</div>
+                        <h2>评估结果</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="results-summary" class="results-summary"></div>
+
+                        <!-- Action buttons -->
+                        <div class="action-grid">
+                            <button id="btn-view-report" class="btn-brutal btn-mustard" onclick="viewDetailedReport()">
+                                <span class="material-symbols-outlined">analytics</span>
+                                查看详细报告
+                            </button>
+                            <button id="btn-download-md" class="btn-brutal btn-outline" onclick="downloadReport('md')">
+                                <span class="material-symbols-outlined">description</span>
+                                下载 Markdown
+                            </button>
+                            <button id="btn-download-pdf" class="btn-brutal btn-outline" onclick="downloadReport('pdf')">
+                                <span class="material-symbols-outlined">picture_as_pdf</span>
+                                下载 PDF
+                            </button>
+                        </div>
+
+                        <!-- Advanced analytics -->
+                        <div id="advanced-section" style="display:none">
+                            <div class="section-divider">
+                                <span>高级分析</span>
+                            </div>
+                            <div id="advanced-summary" class="advanced-summary"></div>
+                            <div id="advanced-charts" class="advanced-charts"></div>
+                            <div id="advanced-scholars" class="advanced-scholars"></div>
+                            <div id="advanced-description" class="advanced-description"></div>
+                            <div id="advanced-prediction" class="advanced-prediction"></div>
+                            <div id="advanced-insights" class="advanced-insights"></div>
+                        </div>
+
+                        <div id="results-detail" class="results-detail"></div>
+
+                        <div class="action-row" id="results-new-analysis">
+                            <button class="btn-brutal btn-outline" onclick="startNewAnalysis()">
+                                <span class="material-symbols-outlined">add</span>
+                                分析其他论文
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay" style="display:none" onclick="closeSettingsOnOverlay(event)">
+        <div class="modal-brutal modal-wide">
+            <div class="modal-header">
+                <h2>系统设置</h2>
+                <button class="modal-close" onclick="closeSettings()">[X]</button>
+            </div>
+            <div class="modal-body modal-scroll">
+                <!-- LLM Settings (Required) -->
+                <div class="setting-group">
+                    <h3 class="setting-title">
+                        <span class="material-symbols-outlined">smart_toy</span>
+                        LLM 配置
+                        <span class="required-badge">必填</span>
+                    </h3>
+                    <div class="setting-field">
+                        <label class="field-label">模型名称</label>
+                        <input type="text" id="cfg-llm-model" class="field-input" placeholder="gpt-4o" autocomplete="off">
+                    </div>
+                    <div class="setting-field">
+                        <label class="field-label">API Key</label>
+                        <input type="password" id="cfg-llm-api-key" class="field-input" placeholder="sk-..." autocomplete="off">
+                    </div>
+                    <div class="setting-field">
+                        <label class="field-label">主 Base URL</label>
+                        <input type="text" id="cfg-llm-primary-url" class="field-input" placeholder="https://api.openai.com/v1" autocomplete="off">
+                    </div>
+                    <div class="setting-field">
+                        <label class="field-label">备用 Base URL <span class="optional-tag">可选</span></label>
+                        <input type="text" id="cfg-llm-secondary-url" class="field-input" placeholder="备用 API 地址" autocomplete="off">
+                    </div>
+                    <div class="setting-field">
+                        <label class="field-label">搜索超时 (秒) <span class="optional-tag">可选</span></label>
+                        <input type="number" id="cfg-llm-timeout" class="field-input" placeholder="180" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- SerpAPI -->
+                <div class="setting-group">
+                    <h3 class="setting-title">
+                        <span class="material-symbols-outlined">travel_explore</span>
+                        SerpAPI (Google Scholar)
+                        <span class="required-badge">必填</span>
+                    </h3>
+                    <div class="setting-field">
+                        <label class="field-label">API Key</label>
+                        <input type="password" id="cfg-serp-api-key" class="field-input" placeholder="SerpAPI key" autocomplete="off">
+                        <p class="field-hint">在 <a href="https://serpapi.com/manage-api-key" target="_blank">serpapi.com</a> 获取</p>
+                    </div>
+                </div>
+
+                <!-- Semantic Scholar -->
+                <div class="setting-group">
+                    <h3 class="setting-title">
+                        <span class="material-symbols-outlined">school</span>
+                        Semantic Scholar
+                        <span class="optional-badge">可选</span>
+                    </h3>
+                    <div class="setting-field">
+                        <label class="field-label">API Key <span class="optional-tag">可选</span></label>
+                        <input type="password" id="cfg-s2-api-key" class="field-input" placeholder="留空则使用无认证访问" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- ADS ABS -->
+                <div class="setting-group">
+                    <h3 class="setting-title">
+                        <span class="material-symbols-outlined">satellite_alt</span>
+                        NASA ADS
+                        <span class="optional-badge">可选</span>
+                    </h3>
+                    <div class="setting-field">
+                        <label class="field-label">API Key <span class="optional-tag">可选</span></label>
+                        <input type="password" id="cfg-ads-api-key" class="field-input" placeholder="ADS API key" autocomplete="off">
+                        <p class="field-hint">在 <a href="https://ui.adsabs.harvard.edu/user/settings/token" target="_blank">ADS Settings</a> 获取</p>
+                    </div>
+                </div>
+
+                <!-- MinerU -->
+                <div class="setting-group">
+                    <h3 class="setting-title">
+                        <span class="material-symbols-outlined">document_scanner</span>
+                        MinerU (PDF 解析)
+                        <span class="optional-badge">可选</span>
+                    </h3>
+                    <div class="setting-field">
+                        <label class="field-label">API Token <span class="optional-tag">可选</span></label>
+                        <input type="password" id="cfg-mineru-token" class="field-input" placeholder="MinerU API token" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Proxy -->
+                <div class="setting-group">
+                    <h3 class="setting-title">
+                        <span class="material-symbols-outlined">vpn_key</span>
+                        代理设置
+                        <span class="optional-badge">可选</span>
+                    </h3>
+                    <div class="setting-field">
+                        <label class="field-label">Fallback Proxy <span class="optional-tag">可选</span></label>
+                        <input type="text" id="cfg-proxy" class="field-input" placeholder="http://127.0.0.1:7890" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-brutal btn-outline" onclick="closeSettings()">取消</button>
+                <button class="btn-brutal" onclick="saveSettings()">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

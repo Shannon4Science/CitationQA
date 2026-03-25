@@ -1,0 +1,177 @@
+---
+import type { AdvancedAnalytics } from '../lib/types';
+
+interface Props {
+  analytics: AdvancedAnalytics;
+}
+const { analytics } = Astro.props;
+
+const timeDist = analytics.time_distribution;
+const oldYearly = analytics.yearly_distribution || {};
+const years: string[] = timeDist?.labels || Object.keys(oldYearly).sort();
+const yearValues: number[] = timeDist?.values?.map(v => Number(v) || 0) || years.map(y => oldYearly[y] || 0);
+const maxYearVal = Math.max(...yearValues, 1);
+
+function labelValueToEntries(lv: any): [string, number][] {
+  if (!lv?.labels) return [];
+  return lv.labels.map((l: string, i: number) => [l, Number(lv.values?.[i]) || 0] as [string, number]);
+}
+
+const countryAll = analytics.country_distribution_all;
+const oldCountry = analytics.country_distribution || {};
+const countries: [string, number][] = countryAll
+  ? labelValueToEntries(countryAll).sort((a, b) => b[1] - a[1])
+  : Object.entries(oldCountry).sort((a, b) => b[1] - a[1]);
+
+const topCountries = countries.slice(0, 8);
+const maxCountryVal = topCountries.length > 0 ? topCountries[0][1] : 1;
+const totalCitations = countries.reduce((s, [, v]) => s + v, 0);
+
+const oldInst = analytics.institution_distribution || {};
+const topInst = Object.entries(oldInst).sort((a, b) => b[1] - a[1]).slice(0, 6);
+
+const infPred = analytics.influence_prediction || analytics.impact_prediction as any || {};
+const trendData = infPred.trend_data;
+const trendLabels: string[] = trendData?.labels || [];
+const trendActual: (number | null)[] = trendData?.actual || [];
+const trendForecast: (number | null)[] = trendData?.forecast || [];
+---
+
+<section id="demographics" class="section-anchor">
+  <div class="max-w-[1600px] mx-auto neo-border-l neo-border-r">
+    <!-- Section Header -->
+    <div class="p-8 bg-neo-black text-neo-parchment neo-border-b">
+      <h2 class="font-serif text-4xl md:text-5xl font-bold uppercase tracking-tight">Demographics & Geography</h2>
+      <p class="font-mono text-sm mt-2 text-neo-parchment/70 uppercase">Temporal and spatial distribution of citations</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row">
+      <!-- Left Sidebar Stats -->
+      <aside class="w-full lg:w-72 flex-shrink-0 neo-border-r flex flex-col">
+        <div class="p-6 neo-border-b" style="background:rgba(138,154,134,0.15)">
+          <h3 class="font-mono text-xs uppercase font-bold mb-4 tracking-widest">Global Reach</h3>
+          <div class="text-5xl font-black font-mono">{countries.length}<span class="text-2xl text-neo-sage ml-1">countries</span></div>
+          <p class="text-sm font-mono mt-2 text-neo-black/70">{totalCitations.toLocaleString()} total citations</p>
+        </div>
+        <div class="p-6 neo-border-b" style="background:rgba(217,183,86,0.15)">
+          <h3 class="font-mono text-xs uppercase font-bold mb-4 tracking-widest">Leading Region</h3>
+          <div class="text-3xl font-black font-mono">{topCountries[0]?.[0] || 'N/A'}</div>
+          <div class="font-mono text-sm font-bold text-neo-sage mt-1">{topCountries[0]?.[1]?.toLocaleString() || 0} citations</div>
+        </div>
+        <div class="p-6 flex-1">
+          <h3 class="font-mono text-xs uppercase font-bold mb-6 tracking-widest">Top Citing Regions</h3>
+          <div class="space-y-4">
+            {topCountries.map(([country, count]) => (
+              <div class="group cursor-pointer p-2 -mx-2 hover:bg-neo-sage" style="transition:all 0s">
+                <div class="flex justify-between items-center">
+                  <span class="font-mono font-bold text-sm">{country}</span>
+                  <span class="font-mono text-sm font-bold">{count.toLocaleString()}</span>
+                </div>
+                <div class="w-full h-2 neo-border bg-neo-parchment mt-1 relative">
+                  <div class="absolute top-0 left-0 h-full bg-neo-blue" style={`width:${(count / maxCountryVal) * 100}%;`} />
+                </div>
+              </div>
+            ))}
+            {countries.length === 0 && (
+              <p class="font-mono text-xs text-neo-black/40">No country data available</p>
+            )}
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right: Charts -->
+      <div class="flex-1 flex flex-col">
+        {/* Top Institutions Grid (if available) */}
+        {topInst.length > 0 && (
+          <div class="p-6 neo-border-b">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-mono text-sm font-bold uppercase bg-neo-black text-neo-parchment px-2 py-1 inline-block">Top Institutions</h3>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {topInst.map(([inst, count]) => (
+                <div class="neo-border p-3 bg-white hover:bg-neo-sage group cursor-pointer" style="transition:all 0s">
+                  <div class="font-mono text-xs font-bold uppercase">{inst}</div>
+                  <div class="font-mono text-2xl font-bold mt-1">{count}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Timeline Bar Chart -->
+        <div class="p-6 flex-1">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="font-mono text-sm uppercase font-bold tracking-widest border-l-4 border-neo-mustard pl-2">Temporal Impact Velocity</h3>
+          </div>
+          {years.length > 0 ? (
+            <Fragment>
+              <div class="flex items-end gap-2 h-52 border-l-2 border-b-2 border-neo-black px-2 pb-0 relative">
+                <div class="absolute w-full h-full pointer-events-none flex flex-col justify-between pb-0" style="left:0">
+                  {[0,1,2,3].map(() => (
+                    <div class="w-full border-t border-neo-black/10 border-dashed" />
+                  ))}
+                </div>
+                {years.map((y, i) => {
+                  const pct = (yearValues[i] / maxYearVal) * 100;
+                  const isMax = yearValues[i] === Math.max(...yearValues);
+                  const isPeak = i > 0 && i < years.length - 1 && yearValues[i] > yearValues[i-1] && yearValues[i] > yearValues[i+1];
+                  return (
+                    <div class="flex-1 flex flex-col items-center relative z-10 group cursor-pointer">
+                      <div class="absolute -top-6 font-mono text-[10px] bg-neo-black text-white px-1 hidden group-hover:block whitespace-nowrap">
+                        {yearValues[i]}
+                      </div>
+                      <div
+                        class:list={[
+                          "w-full neo-border border-b-0",
+                          isMax ? "bg-neo-mustard" : isPeak ? "bg-neo-sage" : "bg-neo-blue",
+                          "hover:bg-neo-sage"
+                        ]}
+                        style={`height:${pct}%;min-height:4px;transition:all 0s`}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+              <div class="flex justify-between px-2 mt-2 font-mono text-xs font-bold">
+                {years.map((y) => <span>{y}</span>)}
+              </div>
+            </Fragment>
+          ) : (
+            <div class="h-52 flex items-center justify-center text-neo-black/40 font-mono text-sm">
+              No temporal data available
+            </div>
+          )}
+
+          {/* Prediction extension */}
+          {trendLabels.length > 0 && (
+            <div class="mt-6 p-4 neo-border bg-neo-parchment">
+              <h4 class="font-mono text-xs uppercase font-bold mb-3 tracking-widest">Forecast Trend</h4>
+              <div class="flex items-end gap-3 h-24">
+                {trendLabels.map((label: string, i: number) => {
+                  const aVal = trendActual[i];
+                  const fVal = trendForecast[i];
+                  const val = aVal ?? fVal ?? 0;
+                  const maxVal = Math.max(...[...trendActual, ...trendForecast].filter((v): v is number => v != null));
+                  const pct = maxVal > 0 ? (val / maxVal) * 100 : 0;
+                  const isForecast = aVal == null;
+                  return (
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div class="font-mono text-xs font-bold">{val}</div>
+                      <div
+                        class:list={["w-full", isForecast ? "bg-neo-mustard/40 border-2 border-dashed border-neo-mustard" : "bg-neo-blue neo-border"]}
+                        style={`height:${pct}%;min-height:4px;transition:all 0s`}
+                        title={`${label}: ${val}${isForecast ? ' (forecast)' : ''}`}
+                      />
+                      <div class="font-mono text-[10px]">{label}{isForecast ? '*' : ''}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div class="font-mono text-[10px] text-neo-black/40 mt-2">* forecast values</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

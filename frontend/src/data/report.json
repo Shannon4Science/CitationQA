@@ -1,0 +1,696 @@
+{
+  "paper": {
+    "title": "MinerU: An Open-Source Solution for Precise Document Content Extraction",
+    "authors": [
+      {
+        "name": "Bin Wang",
+        "author_id": "2256857728",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Chaochao Xu",
+        "author_id": "2115474101",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Xiaomeng Zhao",
+        "author_id": "2293816050",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Linke Ouyang",
+        "author_id": "2161162356",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Fan Wu",
+        "author_id": "2257430491",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Zhiyuan Zhao",
+        "author_id": "2246944115",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Rui Xu",
+        "author_id": "2324359308",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Kaiwen Liu",
+        "author_id": "2293560297",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Yuan Qu",
+        "author_id": "2288231452",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Fukai Shang",
+        "author_id": "2293409754",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Bo Zhang",
+        "author_id": "2141897317",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Liqun Wei",
+        "author_id": "2323523914",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Zhihao Sui",
+        "author_id": "2293394797",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Wei Li",
+        "author_id": "2310775847",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Botian Shi",
+        "author_id": "2297846008",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Yu Qiao",
+        "author_id": "2302697413",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Dahua Lin",
+        "author_id": "2303596290",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Conghui He",
+        "author_id": "2267889334",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Chao Xu",
+        "author_id": "",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      }
+    ],
+    "year": 2024,
+    "venue": "arXiv.org",
+    "total_citations": 0,
+    "doi": "10.48550/arXiv.2409.18839"
+  },
+  "comprehensive_eval": {
+    "overall_impact_score": "6",
+    "citation_quality_distribution": {
+      "background_mention": "1",
+      "related_work_brief": "0",
+      "method_reference": "3",
+      "experiment_comparison": "1",
+      "multiple_deep": "0",
+      "unknown": "0"
+    },
+    "depth_distribution": {
+      "superficial": "1",
+      "moderate": "3",
+      "substantial": "0",
+      "unknown": "1"
+    },
+    "sentiment_distribution": {
+      "positive": "3",
+      "neutral": "2",
+      "critical": "0",
+      "mixed": "0",
+      "unknown": "0"
+    },
+    "key_findings": [
+      "MinerU的被引方式以方法型引用为主，更多作为PDF解析与文档内容抽取基础组件嵌入下游系统，而非被深入理论讨论。",
+      "现有引用主要集中在复杂文档解析、数据构建、文档分块与商品信息抽取等应用场景，说明其工具属性和工程可用性较强。",
+      "尽管总被引次数较高，但样本内高强度、深层次引用较少，当前学术影响更偏向基础设施支撑与实验基线角色。"
+    ],
+    "overall_summary": "从已分析的5篇被引论文看，MinerU的学术影响呈现明显的“工具型基础设施”特征。其引用主要集中在方法参考与实际系统集成层面，3篇论文将其作为PDF解析、文档抽取或PDF转Markdown模块直接用于下游任务，表明该工作在工程落地和跨场景适配方面具备较强实用价值。同时，MinerU也被纳入表格抽取基准比较，说明其已进入相关领域的评测视野。不过，现有样本中的引用深度总体有限，缺乏多处深入讨论或核心机制层面的扩展性继承，背景性和浅层对比性引用仍占一定比例。总体而言，MinerU已在文档智能处理生态中形成稳定影响，尤其适合作为通用文档解析底座，但其更高层次的学术方法影响力仍有待进一步体现。",
+    "influence_areas": [
+      "文档智能与PDF内容解析",
+      "大语言模型驱动的信息抽取与数据构建"
+    ],
+    "notable_citations": [
+      "Click-to-Ask: An AI Live Streaming Assistant with Offline Copywriting and Online Interactive QA",
+      "TopoChunker: Topology-Aware Agentic Document Chunking Framework"
+    ]
+  },
+  "evaluations": [
+    {
+      "citation_locations": [],
+      "citation_type": "method",
+      "citation_depth": "background",
+      "citation_sentiment": "neutral",
+      "quality_score": 0.26,
+      "summary": "基于摘要推测，该文主要聚焦大坝结构健康监测的多智能体LLM系统，与MinerU的关联更可能体现在文档信息提取等辅助环节。",
+      "detailed_analysis": "无法获取全文进行详细分析。基于摘要推测：该文核心贡献应在于面向水工大坝SHM的LLM多智能体框架，而MinerU作为文档内容提取工具，若被引用，较可能用于报告、规范或监测文档的解析预处理，属于方法性或工具性引用，引用深度预计较浅，难判断其是否构成关键技术支撑。",
+      "fulltext_available": false,
+      "citing_title": "LLM-based multi-agent system for dam structural health monitoring",
+      "citing_year": 2026,
+      "content_type": "abstract_only",
+      "reference_verified": false,
+      "evidence_summary": "",
+      "evidence_sources": [],
+      "evaluation_method": "fulltext_fallback",
+      "fulltext_url": "https://doi.org/10.1016/j.autcon.2026.106895",
+      "paper_influence_score": 3,
+      "paper_influence_level": "较低",
+      "paper_influence_reason": "Google Scholar被引 0 次，发表来源判断为 sciencedirect.com（学术出版社/期刊平台）",
+      "scholar_citation_count": 0,
+      "publication_source": "sciencedirect.com",
+      "publication_source_type": "学术出版社/期刊平台",
+      "publication_domain": "sciencedirect.com",
+      "scholar_link": "https://www.sciencedirect.com/science/article/pii/S0926580526001366"
+    },
+    {
+      "citation_locations": [
+        {
+          "section": "Experiments and Results",
+          "context": "We selected 21 parsers spanning the full spectrum of contemporary document parsing approaches. Among specialized OCR models, we evaluate Chandra[30], DeepSeek-OCR[42], dots.ocr[17], GOT-OCR2.0[41], LightOnOCR-2-1B[39], Mathpix[24], MinerU2.5[40], Mistral OCR 3[25], MonkeyOCR-3B[18], Nanonets-OCR-s[23], and olmOCR-2-7B[31].",
+          "purpose": "将目标论文对应系统作为被测PDF解析器之一纳入实验基线/benchmark比较。"
+        }
+      ],
+      "citation_type": "experiment_comparison",
+      "citation_depth": "superficial",
+      "citation_sentiment": "neutral",
+      "quality_score": 2,
+      "summary": "该论文仅在实验系统列表中将MinerU作为被评测解析器之一提及，用于横向基准比较而未展开讨论。",
+      "detailed_analysis": "参考文献中目标论文对应编号为[40]，正文仅在第5节实验设置里出现一次，且主要作用是把MinerU2.5列入21个待测PDF解析器名单。该引用不是方法构建的核心依据，也未讨论MinerU的技术细节、优势、局限或与本文LLM评测框架的具体关系，更没有针对其结果进行专门分析。因此它属于典型的实验对比型引用，但深度较浅，更多是工具清单式罗列。其意义在于说明作者的benchmark覆盖了当前代表性文档解析系统，增强实验广度与可比性。",
+      "citing_title": "Benchmarking PDF Parsers on Table Extraction with LLM-based Semantic Evaluation",
+      "citing_year": 2026,
+      "content_type": "html",
+      "fulltext_available": true,
+      "reference_verified": true,
+      "evidence_summary": "",
+      "evidence_sources": [],
+      "evaluation_method": "fulltext_fallback",
+      "html_url": "https://arxiv.org/html/2603.18652",
+      "pdf_url": "https://arxiv.org/pdf/2603.18652",
+      "fulltext_url": "https://arxiv.org/html/2603.18652",
+      "paper_influence_score": 1,
+      "paper_influence_level": "低",
+      "paper_influence_reason": "Google Scholar被引 0 次，发表来源判断为 semanticscholar.org（未识别来源）",
+      "scholar_citation_count": 0,
+      "publication_source": "semanticscholar.org",
+      "publication_source_type": "未识别来源",
+      "publication_domain": "semanticscholar.org",
+      "scholar_link": ""
+    },
+    {
+      "citation_locations": [
+        {
+          "section": "2.1.1 Product information integration",
+          "context": "In this stage, user inputs are processed in multiple forms, including text, images, and files. File inputs support various formats such as PDF, DOC, XLSX, TXT, and WAV. Notably, PDF parsing is powered by our proprietary MinerU engine (Wang et al., 2024), which integrates OCR and layout analysis to handle complex document structures, while WAV files are processed through Automatic Speech Recognition (ASR) to convert speech into text.",
+          "purpose": "说明其离线模块中的PDF解析组件采用了MinerU，用于处理复杂文档结构并抽取产品信息。"
+        }
+      ],
+      "citation_type": "method_reference",
+      "citation_depth": "moderate",
+      "citation_sentiment": "positive",
+      "quality_score": 3,
+      "summary": "该论文在离线产品信息整合模块中将MinerU作为PDF解析引擎使用，用于支撑复杂商品文档内容抽取。",
+      "detailed_analysis": "参考文献中明确列出MinerU论文，正文仅在方法部分出现一次，且与具体系统功能直接相关，不是泛泛背景介绍，而是作为PDF parsing模块的技术来源。引用表述为“powered by our proprietary MinerU engine”，说明作者实际采用或集成了该方案来处理复杂文档结构，体现出正向认可。但论文未进一步说明MinerU的具体模块、配置、适配方式，也没有做消融实验或与其他PDF解析工具比较，因此引用虽具有实用性和方法关联性，但深度有限，整体属于中等质量的方法性引用。",
+      "citing_title": "Click-to-Ask: An AI Live Streaming Assistant with Offline Copywriting and Online Interactive QA",
+      "citing_year": 2026,
+      "content_type": "html",
+      "fulltext_available": true,
+      "reference_verified": true,
+      "evidence_summary": "",
+      "evidence_sources": [],
+      "evaluation_method": "fulltext_fallback",
+      "html_url": "https://arxiv.org/html/2603.18649",
+      "pdf_url": "https://arxiv.org/pdf/2603.18649",
+      "fulltext_url": "https://arxiv.org/html/2603.18649",
+      "paper_influence_score": 1,
+      "paper_influence_level": "低",
+      "paper_influence_reason": "Google Scholar被引 0 次，发表来源判断为 semanticscholar.org（未识别来源）",
+      "scholar_citation_count": 0,
+      "publication_source": "semanticscholar.org",
+      "publication_source_type": "未识别来源",
+      "publication_domain": "semanticscholar.org",
+      "scholar_link": ""
+    },
+    {
+      "citation_locations": [
+        {
+          "section": "Method / 3.1.1 Active Probing and Path Selection",
+          "context": "For scanned files or documents with complex spatial layouts, the Inspector triggers a vision-centric pipeline. This path leverages layout-aware VLM extractors (e.g., MinerU Wang et al. (2024)) for physical parsing. Rather than flattening the output into linear text streams, TopoChunker explicitly preserves the extracted coordinates and the physical integrity of non-textual elements.",
+          "purpose": "将MinerU作为复杂版面与扫描文档的物理解析工具示例，用于支撑其视觉拓扑抽取路径。"
+        }
+      ],
+      "citation_type": "method_reference",
+      "citation_depth": "moderate",
+      "citation_sentiment": "positive",
+      "quality_score": 3,
+      "summary": "该论文在方法部分将MinerU作为复杂文档物理解析的代表性抽取器，用于支撑其视觉拓扑处理路径。",
+      "detailed_analysis": "该引用出现在方法设计核心环节，不是泛泛背景提及，而是把MinerU纳入其视觉中心抽取流程中，说明作者认可MinerU在复杂版面、扫描文档和非文本元素解析上的能力。引用目的较明确：MinerU负责底层物理解析，TopoChunker在其之上保留坐标和拓扑关系并映射到自身SIR/Markdown表示。不过，论文仅将MinerU作为“可用抽取器”的例子，没有详细讨论其具体模块、性能优势、适配细节，也未做专门实验对比或消融验证，因此属于中等深度、正向但不算深入的功能性方法引用。",
+      "citing_title": "TopoChunker: Topology-Aware Agentic Document Chunking Framework",
+      "citing_year": 2026,
+      "content_type": "html",
+      "fulltext_available": true,
+      "reference_verified": true,
+      "evidence_summary": "",
+      "evidence_sources": [],
+      "evaluation_method": "fulltext_fallback",
+      "html_url": "https://arxiv.org/html/2603.18409",
+      "pdf_url": "https://arxiv.org/pdf/2603.18409",
+      "fulltext_url": "https://arxiv.org/html/2603.18409",
+      "paper_influence_score": 1,
+      "paper_influence_level": "低",
+      "paper_influence_reason": "Google Scholar被引 0 次，发表来源判断为 semanticscholar.org（未识别来源）",
+      "scholar_citation_count": 0,
+      "publication_source": "semanticscholar.org",
+      "publication_source_type": "未识别来源",
+      "publication_domain": "semanticscholar.org",
+      "scholar_link": ""
+    },
+    {
+      "citation_locations": [
+        {
+          "section": "Data Collection and Extraction",
+          "context": "We utilize the OpenReview API ... to collect paper PDFs and process them using MinerU (Wang et al., 2024a) to convert papers into Markdown format. To ensure high-quality input, we employ Qwen3-235B-Instruct to parse the raw text, extracting the research topic, background, and main references to form a standardized context xi.",
+          "purpose": "将MinerU作为论文PDF内容抽取与Markdown转换工具，用于构建训练数据预处理流程。"
+        }
+      ],
+      "citation_type": "method_reference",
+      "citation_depth": "moderate",
+      "citation_sentiment": "positive",
+      "quality_score": 3,
+      "summary": "该论文在数据收集阶段将MinerU用作PDF转Markdown的文档解析工具，用于支撑训练数据构建。",
+      "detailed_analysis": "该引用出现在数据收集与抽取环节，明确说明作者使用MinerU处理OpenReview获取的论文PDF，并转换为Markdown以便后续信息抽取，属于实际方法链条中的工具性引用。引用体现了目标论文在文档内容提取上的应用价值，且与本文数据构建直接相关，因此并非简单背景提及。然而，文中未进一步讨论MinerU的技术细节、选择原因、性能优势或与其他解析工具的比较，也未报告其对数据质量的具体影响，因此引用深度有限，整体属于中等质量、正向的功能性方法引用。",
+      "citing_title": "MoRI: Learning Motivation-Grounded Reasoning for Scientific Ideation in Large Language Models",
+      "citing_year": 2026,
+      "content_type": "html",
+      "fulltext_available": true,
+      "reference_verified": true,
+      "evidence_summary": "",
+      "evidence_sources": [],
+      "evaluation_method": "fulltext_fallback",
+      "html_url": "https://arxiv.org/html/2603.19044",
+      "pdf_url": "https://arxiv.org/pdf/2603.19044",
+      "fulltext_url": "https://arxiv.org/html/2603.19044",
+      "paper_influence_score": 1,
+      "paper_influence_level": "低",
+      "paper_influence_reason": "Google Scholar被引 0 次，发表来源判断为 semanticscholar.org（未识别来源）",
+      "scholar_citation_count": 0,
+      "publication_source": "semanticscholar.org",
+      "publication_source_type": "未识别来源",
+      "publication_domain": "semanticscholar.org",
+      "scholar_link": ""
+    }
+  ],
+  "advanced_analytics": {
+    "time_distribution": {
+      "labels": [
+        "2026"
+      ],
+      "values": [
+        5
+      ]
+    },
+    "country_distribution_all": {
+      "labels": [
+        "中国",
+        "德国"
+      ],
+      "values": [
+        3,
+        1
+      ]
+    },
+    "country_distribution_renowned": {
+      "labels": [
+        "中国"
+      ],
+      "values": [
+        1
+      ]
+    },
+    "country_distribution_top": {
+      "labels": [],
+      "values": []
+    },
+    "scholar_level_distribution": {
+      "labels": [
+        "杰青/长江/优青"
+      ],
+      "values": [
+        1
+      ]
+    },
+    "citation_description_analysis": {
+      "citation_types": [
+        {
+          "type": "method_reference",
+          "count": 3,
+          "description": "主要将目标论文对应方法/工具作为实际系统组件或处理引擎集成到自身方法流程中，用于文档解析、信息抽取和数据构建。"
+        },
+        {
+          "type": "experiment_comparison",
+          "count": 1,
+          "description": "将目标论文对应方法作为实验基线或被评测对象纳入横向比较，用于性能对照而非方法扩展。"
+        }
+      ],
+      "citation_positions": [
+        {
+          "position": "方法部分",
+          "count": 2
+        },
+        {
+          "position": "实验/评测部分",
+          "count": 1
+        },
+        {
+          "position": "数据构建/数据收集部分",
+          "count": 1
+        }
+      ],
+      "citation_themes": [
+        {
+          "theme": "PDF解析引擎集成",
+          "frequency": 10
+        },
+        {
+          "theme": "复杂文档内容抽取",
+          "frequency": 8
+        },
+        {
+          "theme": "表格提取基准评测",
+          "frequency": 6
+        },
+        {
+          "theme": "PDF转Markdown",
+          "frequency": 7
+        },
+        {
+          "theme": "训练数据构建支撑",
+          "frequency": 7
+        },
+        {
+          "theme": "复杂商品文档处理",
+          "frequency": 6
+        },
+        {
+          "theme": "物理版面解析",
+          "frequency": 7
+        },
+        {
+          "theme": "视觉拓扑处理前置模块",
+          "frequency": 6
+        }
+      ],
+      "sentiment_distribution": {
+        "positive": 75,
+        "neutral": 25,
+        "critical": 0
+      },
+      "key_findings": [
+        "引用以方法性使用为主，说明目标论文对应工具更常被视为可复用的基础设施，而非单纯的对比基线。",
+        "引用场景集中在复杂PDF解析、文档抽取与数据构建，表明其应用价值主要体现在上游文档处理链条中。",
+        "整体引用态度明显偏正向，且不存在批评性引用，说明样本中目标方法的工程可用性与实用性获得较高认可。"
+      ],
+      "citation_depth": {
+        "core_citation": 50,
+        "reference_citation": 25,
+        "supplementary_citation": 25
+      }
+    },
+    "influence_prediction": {
+      "trend_data": {
+        "labels": [
+          "2026",
+          "2027"
+        ],
+        "actual": [
+          5,
+          null
+        ],
+        "forecast": [
+          null,
+          7
+        ]
+      },
+      "prediction_metrics": [
+        {
+          "label": "预计2026年引用量",
+          "value": "~5",
+          "note": "当前已观测到5篇引用，且全部集中在2026年"
+        },
+        {
+          "label": "预计2027年引用量",
+          "value": "~7",
+          "note": "若研究主题保持活跃，预计次年引用将温和增长"
+        },
+        {
+          "label": "引用年增速 (YoY)",
+          "value": "+40%",
+          "note": "基于低基数起步与早期扩散效应的保守预测"
+        }
+      ],
+      "impact_scores": [
+        {
+          "label": "学术关注度",
+          "score": 36,
+          "color_class": "fill-cyan"
+        },
+        {
+          "label": "传播潜力",
+          "score": 42,
+          "color_class": "fill-green"
+        },
+        {
+          "label": "作者影响背书",
+          "score": 28,
+          "color_class": "fill-purple"
+        },
+        {
+          "label": "长期成长性",
+          "score": 48,
+          "color_class": "fill-orange"
+        }
+      ],
+      "prediction_commentary": "该论文目前处于引用积累初期，5篇引用全部出现在2026年，说明其刚进入学术传播视野，但整体扩散范围仍较有限。引用论文总被引量和单篇被引量均为0，表明当前引用者本身影响力尚弱。虽有1位知名学者参与引用，带来一定背书，但暂不足以形成强势扩散。预计2027年将保持小幅增长，整体趋势偏温和。"
+    },
+    "insight_cards": [
+      {
+        "color": "teal",
+        "icon": "📈",
+        "title": "引用时点高度集中，处于早期扩散阶段",
+        "body": "现有5篇引用论文全部发表于2026年，年份分布单一，说明该目标论文的外部引用仍处于刚启动的早期扩散阶段。结合引用论文最高被引量仅为0，可判断其学术影响尚未经过时间沉淀，更适合从应用落地潜力而非传统被引表现评估其价值。"
+      },
+      {
+        "color": "sage",
+        "icon": "🌏",
+        "title": "国际来源初现，但区域分布仍偏集中",
+        "body": "从引用学者来源看，前5国家中中国占3次、德国占1次，说明当前引用已具备初步跨国传播特征，但主体仍集中于中国研究者。该结构表明目标论文的应用影响开始外溢，不过国际扩散广度有限，后续仍需观察更多国家与机构的跟进情况。"
+      },
+      {
+        "color": "amber",
+        "icon": "🏆",
+        "title": "尚未形成头部学者背书，影响更多来自工具价值",
+        "body": "样本中总知名学者数仅1人，且院士/Fellow为0，说明当前引用尚未形成由顶尖学术声望驱动的扩散格局。换言之，目标论文现阶段获得关注，更多依赖其在实际任务中的可用性与功能价值，而非头部学者集中引用所带来的声誉放大效应。"
+      },
+      {
+        "color": "violet",
+        "icon": "🔬",
+        "title": "方法型正向引用突出，工程基础设施属性明显",
+        "body": "引用描述显示，其被引用方式以方法性使用为主，主要落在复杂PDF解析、文档抽取与数据构建等上游环节；同时整体引用态度明显偏正向，且无批评性引用。这说明该论文更像可复用的工程基础设施，在实际文档处理链条中获得了较高认可。"
+      }
+    ],
+    "citation_description_summary": "## 引用规模与分布\n从所给 4 篇引用样本来看，目标论文的引用规模目前以工具性、方法性引用为主，尚未出现大规模理论延展或专门批判性讨论。引用来源覆盖文档解析评测、智能直播助手、文档切分框架以及科研数据构建等方向，说明其影响主要分布在文档理解与下游应用场景。\n\n## 主要引用用途\n现有引用主要集中在三类用途。其一是作为**基准比较对象**，如在 PDF 表格抽取评测中被纳入解析器列表，用于横向性能对照。其二是作为**底层文档解析工具**，被集成进商品信息整合、科研语料收集等流程中，承担 PDF 内容抽取或转写任务。其三是作为**代表性方法参考**，在复杂文档处理研究中被视为物理解析或版面抽取路径的典型实现，用于支撑后续视觉拓扑分析、分块处理等方法设计。\n\n## 代表性引用描述原文\n> 该论文仅在实验系统列表中将MinerU作为被评测解析器之一提及，用于横向基准比较而未展开讨论。\n\n> 该论文在离线产品信息整合模块中将MinerU作为PDF解析引擎使用，用于支撑复杂商品文档内容抽取。\n\n> 该论文在方法部分将MinerU作为复杂文档物理解析的代表性抽取器，用于支撑其视觉拓扑处理路径。\n\n> 该论文在数据收集阶段将MinerU用作PDF转Markdown的文档解析工具，用于支撑训练数据构建。\n\n## 综合说明\n整体来看，目标论文当前主要被视为一项具有实用价值的文档解析能力组件，其引用模式偏向工程集成与方法支撑。引用深度以中等和表层为主，表明其已在多个任务链路中获得采用，但学术层面的深入机制讨论和专门扩展仍相对有限。",
+    "stats_summary": {
+      "total_papers": 5,
+      "unique_scholars": 1,
+      "fellow_count": 0,
+      "country_count": 2,
+      "self_citation_count": 0,
+      "max_citation": 0,
+      "total_citation_sum": 0
+    }
+  },
+  "scholar_profiles": [
+    {
+      "name": "王劲廷",
+      "institution": "清华大学水利水电工程系",
+      "country": "中国",
+      "title": "Professor",
+      "honors": "国家杰出青年科学基金获得者",
+      "level": "distinguished",
+      "level_label": "杰青/长江/优青",
+      "citing_paper_title": "LLM-based multi-agent system for dam structural health monitoring",
+      "citing_year": 2026,
+      "citation_type": "method",
+      "citation_summary": "基于摘要推测，该文主要聚焦大坝结构健康监测的多智能体LLM系统，与MinerU的关联更可能体现在文档信息提取等辅助环节。",
+      "is_top": false,
+      "author_rank": 8
+    }
+  ],
+  "graph_data": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "MinerU: An Open-Source Solution for Prec",
+        "type": "root",
+        "size": 30,
+        "year": 2024,
+        "score": null
+      },
+      {
+        "id": "c0",
+        "label": "LLM-based multi-agent system f",
+        "type": "citation",
+        "size": 8,
+        "year": 2026,
+        "score": 0.26
+      },
+      {
+        "id": "c1",
+        "label": "Benchmarking PDF Parsers on Ta",
+        "type": "citation",
+        "size": 8,
+        "year": 2026,
+        "score": 2
+      },
+      {
+        "id": "c2",
+        "label": "Click-to-Ask: An AI Live Strea",
+        "type": "citation",
+        "size": 12,
+        "year": 2026,
+        "score": 3
+      },
+      {
+        "id": "c3",
+        "label": "TopoChunker: Topology-Aware Ag",
+        "type": "citation",
+        "size": 12,
+        "year": 2026,
+        "score": 3
+      },
+      {
+        "id": "c4",
+        "label": "MoRI: Learning Motivation-Grou",
+        "type": "citation",
+        "size": 12,
+        "year": 2026,
+        "score": 3
+      },
+      {
+        "id": "a1",
+        "label": "王劲廷",
+        "type": "author",
+        "size": 10
+      },
+      {
+        "id": "con1",
+        "label": "sciencedirect.com",
+        "type": "concept",
+        "size": 14
+      },
+      {
+        "id": "con2",
+        "label": "semanticscholar.org",
+        "type": "concept",
+        "size": 14
+      }
+    ],
+    "edges": [
+      {
+        "source": "c0",
+        "target": "root",
+        "type": "cites"
+      },
+      {
+        "source": "c1",
+        "target": "root",
+        "type": "cites"
+      },
+      {
+        "source": "c2",
+        "target": "root",
+        "type": "cites"
+      },
+      {
+        "source": "c3",
+        "target": "root",
+        "type": "cites"
+      },
+      {
+        "source": "c4",
+        "target": "root",
+        "type": "cites"
+      },
+      {
+        "source": "c0",
+        "target": "con1",
+        "type": "about"
+      },
+      {
+        "source": "c1",
+        "target": "con2",
+        "type": "about"
+      },
+      {
+        "source": "c2",
+        "target": "con2",
+        "type": "about"
+      },
+      {
+        "source": "c3",
+        "target": "con2",
+        "type": "about"
+      },
+      {
+        "source": "c4",
+        "target": "con2",
+        "type": "about"
+      }
+    ]
+  },
+  "generated_at": "2026-03-25T12:14:22.612363",
+  "task_id": "5a6b0255"
+}

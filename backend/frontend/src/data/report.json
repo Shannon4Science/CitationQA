@@ -1,0 +1,390 @@
+{
+  "paper": {
+    "title": "MinerU: An Open-Source Solution for Precise Document Content Extraction",
+    "authors": [
+      {
+        "name": "Bin Wang",
+        "author_id": "2256857728",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Chaochao Xu",
+        "author_id": "2115474101",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Xiaomeng Zhao",
+        "author_id": "2293816050",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Linke Ouyang",
+        "author_id": "2161162356",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Fan Wu",
+        "author_id": "2257430491",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Zhiyuan Zhao",
+        "author_id": "2246944115",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Rui Xu",
+        "author_id": "2324359308",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Kaiwen Liu",
+        "author_id": "2293560297",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Yuan Qu",
+        "author_id": "2288231452",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Fukai Shang",
+        "author_id": "2293409754",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Bo Zhang",
+        "author_id": "2141897317",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Liqun Wei",
+        "author_id": "2323523914",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Zhihao Sui",
+        "author_id": "2293394797",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Wei Li",
+        "author_id": "2310775847",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Botian Shi",
+        "author_id": "2297846008",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Yu Qiao",
+        "author_id": "2302697413",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Dahua Lin",
+        "author_id": "2303596290",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Conghui He",
+        "author_id": "2267889334",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      },
+      {
+        "name": "Chao Xu",
+        "author_id": "",
+        "institution": "",
+        "name_en": "",
+        "name_zh": ""
+      }
+    ],
+    "year": 2024,
+    "venue": "arXiv.org",
+    "total_citations": 0,
+    "doi": "10.48550/arXiv.2409.18839"
+  },
+  "comprehensive_eval": {
+    "overall_impact_score": 3,
+    "citation_quality_distribution": {
+      "background_mention": 1,
+      "related_work_brief": 0,
+      "method_reference": 0,
+      "experiment_comparison": 0,
+      "multiple_deep": 0,
+      "unknown": 0
+    },
+    "depth_distribution": {
+      "superficial": 1,
+      "moderate": 0,
+      "substantial": 0,
+      "unknown": 0
+    },
+    "sentiment_distribution": {
+      "positive": 0,
+      "neutral": 1,
+      "critical": 0,
+      "mixed": 0,
+      "unknown": 0
+    },
+    "key_findings": [
+      "当前已分析的被引样本仅有1篇，且属于背景性、浅层次引用，说明现有证据下MinerU在具体研究中的实质性方法影响尚未得到体现。",
+      "该引用主要将MinerU视为文档解析或信息提取的通用工具性参考，而非核心方法、实验对比对象或关键技术基线。",
+      "尽管目标论文总被引次数较高，但基于当前提供的单篇评估结果，暂无法证明其高被引已转化为高质量、深层次的学术影响。"
+    ],
+    "overall_summary": "从当前纳入分析的被引论文来看，MinerU的引用质量整体偏弱。唯一一篇被引论文将其作为背景性工具参考，引用深度为浅层，态度中性，未体现出对其方法机制、系统设计或实验性能的深入讨论，也未将其作为核心方法依赖或对比基线。这表明在现有样本范围内，MinerU更多被视为文档内容提取领域中的通用开源方案，而非在特定任务中产生关键推动作用的研究对象。需要指出的是，目标论文总被引次数达到217次，但当前仅分析了1篇被引论文，样本代表性明显不足，因此本报告更适合作为阶段性判断，不能完全代表其整体学术影响全貌。",
+    "influence_areas": [
+      "文档内容提取与文档解析",
+      "工程监测中的信息抽取辅助应用"
+    ],
+    "notable_citations": [
+      "LLM-based multi-agent system for dam structural health monitoring"
+    ]
+  },
+  "evaluations": [
+    {
+      "citation_locations": [],
+      "citation_type": "background",
+      "citation_depth": "shallow",
+      "citation_sentiment": "neutral",
+      "quality_score": 2,
+      "summary": "基于摘要推测，该文更可能将MinerU作为文档解析或信息提取的通用工具性参考，引用关系较为外围。",
+      "detailed_analysis": "无法获取全文进行详细分析。基于摘要推测：该文聚焦大坝结构健康监测的多智能体系统，与MinerU的文档内容提取主题并非直接一致，若存在引用，较可能用于说明文档解析、报告处理或数据抽取的技术背景，引用深度和实质性贡献预计有限。",
+      "fulltext_available": false,
+      "citing_title": "LLM-based multi-agent system for dam structural health monitoring",
+      "citing_year": 2026,
+      "content_type": "abstract_only",
+      "reference_verified": false,
+      "evidence_summary": "",
+      "evidence_sources": [],
+      "evaluation_method": "fulltext_fallback",
+      "fulltext_url": "https://doi.org/10.1016/j.autcon.2026.106895",
+      "paper_influence_score": 3,
+      "paper_influence_level": "较低",
+      "paper_influence_reason": "Google Scholar被引 0 次，发表来源判断为 sciencedirect.com（学术出版社/期刊平台）",
+      "scholar_citation_count": 0,
+      "publication_source": "sciencedirect.com",
+      "publication_source_type": "学术出版社/期刊平台",
+      "publication_domain": "sciencedirect.com",
+      "scholar_link": "https://www.sciencedirect.com/science/article/pii/S0926580526001366"
+    }
+  ],
+  "advanced_analytics": {
+    "time_distribution": {
+      "labels": [
+        "2026"
+      ],
+      "values": [
+        1
+      ]
+    },
+    "country_distribution_all": {
+      "labels": [
+        "中国"
+      ],
+      "values": [
+        1
+      ]
+    },
+    "country_distribution_renowned": {
+      "labels": [],
+      "values": []
+    },
+    "country_distribution_top": {
+      "labels": [],
+      "values": []
+    },
+    "scholar_level_distribution": {
+      "labels": [],
+      "values": []
+    },
+    "citation_description_analysis": {
+      "citation_types": [],
+      "citation_positions": [],
+      "citation_themes": [],
+      "sentiment_distribution": {
+        "positive": 0,
+        "neutral": 0,
+        "critical": 0
+      },
+      "key_findings": [
+        "暂无足够数据进行深度分析"
+      ],
+      "citation_depth": {
+        "core_citation": 0,
+        "reference_citation": 0,
+        "supplementary_citation": 0
+      }
+    },
+    "influence_prediction": {
+      "trend_data": {
+        "labels": [
+          "2026",
+          "2027"
+        ],
+        "actual": [
+          1,
+          null
+        ],
+        "forecast": [
+          1,
+          1
+        ]
+      },
+      "prediction_metrics": [
+        {
+          "label": "预计2026年引用量",
+          "value": "~1",
+          "note": "趋势外推"
+        },
+        {
+          "label": "预计2027年引用量",
+          "value": "~1",
+          "note": "趋势外推"
+        },
+        {
+          "label": "引用年增速",
+          "value": "+0%",
+          "note": "近两年数据"
+        }
+      ],
+      "impact_scores": [
+        {
+          "label": "理论创新影响力",
+          "score": 45,
+          "color_class": "fill-cyan"
+        },
+        {
+          "label": "跨学科扩散潜力",
+          "score": 35,
+          "color_class": "fill-green"
+        },
+        {
+          "label": "政策实践参考价值",
+          "score": 34,
+          "color_class": "fill-purple"
+        },
+        {
+          "label": "国际学界认可度",
+          "score": 32,
+          "color_class": "fill-orange"
+        }
+      ],
+      "prediction_commentary": "基于历史引用数据分析，该论文年均引用增量约 0 篇，共 1 篇施引文献。"
+    },
+    "insight_cards": [
+      {
+        "color": "teal",
+        "icon": "📈",
+        "title": "引文时间分布高度集中",
+        "body": "当前样本中仅统计到1篇被引用论文，且全部集中在2026年，说明引用时间分布呈现单点集中态势，尚未形成跨年度的连续积累。基于现有数据，暂时无法判断该主题的长期演进趋势与阶段性研究热度变化。"
+      },
+      {
+        "color": "sage",
+        "icon": "🌏",
+        "title": "学者来源呈单一国家特征",
+        "body": "引用学者来源国家前5中仅出现中国，数量为1，表明当前引用网络的地域来源较为单一，国际扩散度有限。在样本规模仅为1的情况下，这更可能反映数据覆盖不足，而非研究影响力已形成稳定的国家分布格局。"
+      },
+      {
+        "color": "amber",
+        "icon": "🏆",
+        "title": "高影响力学者识别尚未建立",
+        "body": "总知名学者数为0，其中院士或Fellow人数也为0，说明现阶段引用名单中尚未识别出具备显著学术头衔或广泛公认影响力的核心学者。结合样本量极小的情况，应谨慎解读其学术权威性与领域代表性。"
+      },
+      {
+        "color": "violet",
+        "icon": "🔬",
+        "title": "引文影响证据不足需补充样本",
+        "body": "引用论文最高被引量为0，且系统提示“暂无足够数据进行深度分析”，说明现有引文记录尚不足以支撑影响力、代表作或知识结构的有效判断。后续应优先补充更多引用样本，再开展共引与核心作者分析。"
+      }
+    ],
+    "citation_description_summary": "",
+    "stats_summary": {
+      "total_papers": 1,
+      "unique_scholars": 0,
+      "fellow_count": 0,
+      "country_count": 1,
+      "self_citation_count": 0,
+      "max_citation": 0,
+      "total_citation_sum": 0
+    }
+  },
+  "scholar_profiles": [],
+  "graph_data": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "MinerU: An Open-Source Solution for Prec",
+        "type": "root",
+        "size": 30,
+        "year": 2024,
+        "score": null
+      },
+      {
+        "id": "c0",
+        "label": "LLM-based multi-agent system f",
+        "type": "citation",
+        "size": 8,
+        "year": 2026,
+        "score": 2
+      },
+      {
+        "id": "con1",
+        "label": "sciencedirect.com",
+        "type": "concept",
+        "size": 14
+      }
+    ],
+    "edges": [
+      {
+        "source": "c0",
+        "target": "root",
+        "type": "cites"
+      },
+      {
+        "source": "c0",
+        "target": "con1",
+        "type": "about"
+      }
+    ]
+  },
+  "generated_at": "2026-03-24T17:27:23.048252",
+  "task_id": "99610867"
+}

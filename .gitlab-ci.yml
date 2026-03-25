@@ -1,0 +1,62 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  APP_NAME: "cqa"
+  APP_ENV: "production"
+  TARGET_DIR: "."
+  IMAGE_TAG: $CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID
+
+.docker_build:
+  stage: build
+  image:
+    name: docker.shlab.tech/public/kaniko-executor:debug
+    entrypoint: [""]
+  cache:
+    paths:
+      - /cache
+  script:
+    - cd $TARGET_DIR
+    - echo "Building image with tag $IMAGE_TAG"
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - export IMAGE_NAME=${CI_REGISTRY}/public/${APP_NAME}:${IMAGE_TAG}
+    - echo "Final image name $IMAGE_NAME"
+    - /kaniko/executor --context "." --dockerfile "Dockerfile" --destination "${IMAGE_NAME}" --cache=true --build-arg "APP_ENV=${APP_ENV}" --push-retry 3 --force
+
+build_image:
+  extends: .docker_build
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master"
+      when: on_success
+    - if: $CI_COMMIT_TAG
+      when: on_success
+    - when: manual
+      allow_failure: true
+
+update_manifests:
+  stage: deploy
+  image:
+    name: docker.shlab.tech/public/git:latest
+    entrypoint: [""]
+  needs:
+    - build_image
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master"
+      when: on_success
+    - if: $CI_COMMIT_TAG
+      when: on_success
+    - when: manual
+      allow_failure: true
+  script:
+    - export IMAGE_NAME=${CI_REGISTRY}/public/${APP_NAME}:${IMAGE_TAG}
+    - echo "Updating k8s manifests with image $IMAGE_NAME"
+    - cd k8s
+    - sed -i "s|image:.*|image:\ ${IMAGE_NAME}|g" deployment.yaml
+    - git config --global user.email "ci-bot@shlab.tech"
+    - git config --global user.name "GitLab CI Bot"
+    - git remote set-url origin "https://oauth2:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - git add deployment.yaml
+    - git diff --staged --quiet || git commit -m "chore(cd) deploy(gitops) - update image to $IMAGE_TAG [skip ci]"
+    - git push origin HEAD:${CI_COMMIT_BRANCH}

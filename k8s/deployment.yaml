@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cqa
+  namespace: shannon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cqa
+  template:
+    metadata:
+      labels:
+        app: cqa
+    spec:
+      containers:
+        - name: cqa
+          image: docker.shlab.tech/public/cqa:main-0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000

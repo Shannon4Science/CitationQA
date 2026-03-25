@@ -1,0 +1,205 @@
+---
+import type { ReportData } from '../lib/types';
+import MiniStarGraph from './MiniStarGraph.tsx';
+
+interface Props {
+  data: ReportData;
+}
+const { data } = Astro.props;
+const { paper, comprehensive_eval: ce, advanced_analytics: aa } = data;
+const impactScore = ce.overall_impact_score;
+const totalCitations = paper.total_citations || data.evaluations.length;
+const scholarCount = data.scholar_profiles.length;
+const countryAll = (aa as any).country_distribution_all || {};
+const countryCount = countryAll.labels ? countryAll.labels.length : (aa.country_distribution ? Object.keys(aa.country_distribution).length : 0);
+
+const timeDist = (aa as any).time_distribution || {};
+const years = timeDist.labels || Object.keys(aa.yearly_distribution || {}).sort();
+const yearValues = timeDist.values || years.map((y: string) => (aa.yearly_distribution || {} as any)[y]);
+
+const rawTypeData = ce.citation_quality_distribution || {};
+const typeData = Object.fromEntries(Object.entries(rawTypeData).map(([k, v]) => [k, Number(v) || 0]));
+const rawDepthData = ce.depth_distribution || {};
+const depthData = Object.fromEntries(Object.entries(rawDepthData).map(([k, v]) => [k, Number(v) || 0]));
+const rawSentData = ce.sentiment_distribution || {};
+const sentData = Object.fromEntries(Object.entries(rawSentData).map(([k, v]) => [k, Number(v) || 0]));
+---
+
+<section id="dashboard" class="section-anchor">
+  <!-- Dark Hero Section -->
+  <div class="bg-neo-dark text-neo-parchment relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none opacity-[0.06]" style="background-image: linear-gradient(#F4F0EB 1px, transparent 1px), linear-gradient(90deg, #F4F0EB 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row">
+      <!-- Left: Title area -->
+      <div class="flex-1 p-8 md:p-12 relative z-10 neo-border-r" style="border-color:#F4F0EB33">
+        <div class="font-mono text-xs tracking-widest text-neo-sage mb-4 uppercase flex items-center gap-2">
+          <span class="w-2 h-2 bg-neo-sage inline-block"></span>
+          Document ID: {data.task_id || 'CitationQA-REPORT'}
+        </div>
+        <h1 class="font-serif text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8 tracking-tighter">
+          {paper.title}
+        </h1>
+        <div class="flex flex-wrap gap-3 font-mono text-sm mb-6">
+          <span class="bg-neo-parchment text-neo-black px-3 py-1 font-bold">{paper.venue}</span>
+          <span class="neo-border-light px-3 py-1">{paper.authors.slice(0, 3).map((a: any) => typeof a === 'string' ? a : a.name).join(', ')}{paper.authors.length > 3 ? ' et al.' : ''}</span>
+          <span class="text-neo-mustard flex items-center gap-2 px-3 py-1">
+            <span class="material-symbols-outlined text-[16px]">bolt</span>
+            IMPACT: {impactScore}/10
+          </span>
+        </div>
+      </div>
+      <!-- Right: Mini star graph -->
+      <div class="w-full md:w-80 flex flex-col">
+        <div class="p-4 bg-neo-black text-neo-parchment font-mono text-sm font-bold tracking-widest uppercase flex justify-between items-center neo-border-b" style="border-color:#F4F0EB33">
+          <span>Citation Constellation</span>
+          <span class="ascii-loader text-neo-sage"></span>
+        </div>
+        <div class="flex-1 p-4 relative min-h-[280px]">
+          <MiniStarGraph client:load graphData={data.graph_data} />
+        </div>
+      </div>
+    </div>
+    <!-- Hero Stats Row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 neo-border-light-t">
+      <div class="p-6 group cursor-pointer hover:bg-neo-parchment hover:text-neo-dark" style="transition:all 0s;border-right:2px solid #F4F0EB33">
+        <div class="font-sans text-xs uppercase tracking-widest text-neo-blue group-hover:text-neo-black mb-4">Total Citations</div>
+        <div class="font-mono text-4xl md:text-5xl font-bold">{totalCitations.toLocaleString()}</div>
+      </div>
+      <div class="p-6 group cursor-pointer hover:bg-neo-parchment hover:text-neo-dark" style="transition:all 0s;border-right:2px solid #F4F0EB33">
+        <div class="font-sans text-xs uppercase tracking-widest text-neo-blue group-hover:text-neo-black mb-4">Impact Score</div>
+        <div class="font-mono text-4xl md:text-5xl font-bold">{impactScore}<span class="text-neo-sage text-2xl ml-1">↑</span></div>
+      </div>
+      <div class="p-6 group cursor-pointer hover:bg-neo-parchment hover:text-neo-dark" style="transition:all 0s;border-right:2px solid #F4F0EB33">
+        <div class="font-sans text-xs uppercase tracking-widest text-neo-blue group-hover:text-neo-black mb-4">Notable Scholars</div>
+        <div class="font-mono text-4xl md:text-5xl font-bold text-neo-mustard group-hover:text-neo-black">{scholarCount}</div>
+      </div>
+      <div class="p-6 group cursor-pointer hover:bg-neo-parchment hover:text-neo-dark" style="transition:all 0s">
+        <div class="font-sans text-xs uppercase tracking-widest text-neo-blue group-hover:text-neo-black mb-4">Countries</div>
+        <div class="font-mono text-4xl md:text-5xl font-bold">{countryCount}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Quadrants -->
+  <div class="max-w-[1600px] mx-auto neo-border-l neo-border-r">
+    <div class="grid grid-cols-1 md:grid-cols-2">
+      <!-- Citations Over Time -->
+      <div class="p-6 neo-border-r neo-border-b">
+        <div class="flex justify-between items-start mb-4">
+          <h3 class="font-mono text-sm font-bold uppercase bg-neo-black text-neo-parchment px-2 py-1 inline-block">Citations Over Time</h3>
+          <span class="material-symbols-outlined text-neo-black">show_chart</span>
+        </div>
+        <div class="relative border-l-2 border-b-2 border-neo-black p-4 flex items-end gap-1 h-48">
+          {years.map((y, i) => {
+            const maxV = Math.max(...yearValues);
+            const pct = maxV > 0 ? (yearValues[i] / maxV) * 100 : 0;
+            const isMax = yearValues[i] === maxV;
+            return (
+              <div class="flex-1 flex flex-col items-center gap-1">
+                <div
+                  class:list={["w-full hover:bg-neo-sage", isMax ? "bg-neo-mustard" : "bg-neo-blue"]}
+                  style={`height:${pct}%;transition:all 0s;min-height:4px`}
+                  title={`${y}: ${yearValues[i]}`}
+                />
+              </div>
+            );
+          })}
+        </div>
+        <div class="flex justify-between font-mono text-[10px] mt-2 text-neo-black/60 px-1">
+          <span>{years[0]}</span>
+          <span>{years[years.length - 1]}</span>
+        </div>
+      </div>
+
+      <!-- Citation Type Distribution -->
+      <div class="p-6 neo-border-b">
+        <div class="flex justify-between items-start mb-4">
+          <h3 class="font-mono text-sm font-bold uppercase bg-neo-black text-neo-parchment px-2 py-1 inline-block">Citation Types</h3>
+          <span class="material-symbols-outlined text-neo-black">donut_large</span>
+        </div>
+        <div class="space-y-3 border-l-2 border-neo-black pl-4">
+          {Object.entries(typeData).map(([key, val]) => {
+            const total = Object.values(typeData).reduce((s, v) => s + v, 0);
+            const pct = total > 0 ? (val / total) * 100 : 0;
+            return (
+              <div class="group cursor-pointer">
+                <div class="flex justify-between mb-1">
+                  <span class="font-mono text-xs uppercase">{key.replace(/_/g, ' ')}</span>
+                  <span class="font-mono text-xs font-bold">{val}</span>
+                </div>
+                <div class="h-5 bg-neo-parchment neo-border relative">
+                  <div
+                    class="absolute top-0 left-0 h-full bg-neo-blue group-hover:bg-neo-sage"
+                    style={`width:${pct}%;transition:all 0s`}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <!-- Depth Distribution -->
+      <div class="p-6 neo-border-r neo-border-b">
+        <div class="flex justify-between items-start mb-4">
+          <h3 class="font-mono text-sm font-bold uppercase bg-neo-black text-neo-parchment px-2 py-1 inline-block">Citation Depth</h3>
+          <span class="material-symbols-outlined text-neo-black">layers</span>
+        </div>
+        <div class="flex items-end gap-4 justify-center h-40 border-l-2 border-b-2 border-neo-black px-4 pb-0">
+          {Object.entries(depthData).map(([key, val]) => {
+            const maxV = Math.max(...Object.values(depthData));
+            const pct = maxV > 0 ? (val / maxV) * 100 : 0;
+            const depthColors = { deep: 'bg-neo-sage', moderate: 'bg-neo-blue', shallow: 'bg-neo-mustard' } as any;
+            return (
+              <div class="flex-1 flex flex-col items-center">
+                <div class="font-mono text-xs font-bold mb-1">{val}</div>
+                <div
+                  class:list={["w-full", depthColors[key.toLowerCase()] || "bg-neo-blue"]}
+                  style={`height:${pct}%;min-height:8px;transition:all 0s`}
+                />
+                <div class="font-mono text-[10px] mt-2 uppercase">{key}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <!-- Sentiment Distribution -->
+      <div class="p-6 neo-border-b">
+        <div class="flex justify-between items-start mb-4">
+          <h3 class="font-mono text-sm font-bold uppercase bg-neo-black text-neo-parchment px-2 py-1 inline-block">Sentiment</h3>
+          <span class="material-symbols-outlined text-neo-black">sentiment_satisfied</span>
+        </div>
+        <div class="flex items-end gap-4 justify-center h-40 border-l-2 border-b-2 border-neo-black px-4 pb-0">
+          {Object.entries(sentData).map(([key, val]) => {
+            const maxV = Math.max(...Object.values(sentData));
+            const pct = maxV > 0 ? (val / maxV) * 100 : 0;
+            const sentColors = { positive: 'bg-neo-sage', neutral: 'bg-neo-blue', negative: 'bg-neo-mustard', critical: 'bg-neo-mustard', mixed: 'bg-neo-blue' } as any;
+            return (
+              <div class="flex-1 flex flex-col items-center">
+                <div class="font-mono text-xs font-bold mb-1">{val}</div>
+                <div
+                  class:list={["w-full", sentColors[key.toLowerCase()] || "bg-neo-blue"]}
+                  style={`height:${pct}%;min-height:8px;transition:all 0s`}
+                />
+                <div class="font-mono text-[10px] mt-2 uppercase">{key}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Findings -->
+    <div class="p-6 neo-border-b">
+      <h3 class="font-mono text-sm font-bold uppercase bg-neo-black text-neo-parchment px-2 py-1 inline-block mb-4">Key Findings</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {ce.key_findings.map((finding: string) => (
+          <div class="neo-border p-4 bg-white hover:bg-neo-sage" style="transition:all 0s">
+            <p class="font-mono text-sm">{finding}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

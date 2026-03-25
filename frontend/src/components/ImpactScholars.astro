@@ -1,0 +1,289 @@
+---
+import type { ReportData } from '../lib/types';
+
+interface Props {
+  data: ReportData;
+}
+const { data } = Astro.props;
+const { comprehensive_eval: ce, scholar_profiles: scholars, advanced_analytics: aa } = data;
+
+const infPred = aa.influence_prediction || aa.impact_prediction as any || {};
+const impactScores = infPred.impact_scores || [];
+const predMetrics = infPred.prediction_metrics || [];
+const predCommentary = infPred.prediction_commentary || '';
+
+const trendData = infPred.trend_data || {};
+const trendLabels = trendData.labels || [];
+const trendActual = trendData.actual || [];
+const trendForecast = trendData.forecast || [];
+
+const insightCards = aa.insight_cards || [];
+const dataInsights = aa.data_insights || [];
+
+const dimScores = (aa.impact_prediction as any)?.dimension_scores;
+const dimEntries: [string, number][] = dimScores
+  ? Object.entries(dimScores).map(([k, v]) => [k, Number(v)])
+  : impactScores.map((s: any) => [s.label, Number(s.score)]);
+
+const insightColorMap: Record<string, string> = {
+  teal: 'border-neo-blue',
+  sage: 'border-neo-sage',
+  mustard: 'border-neo-mustard',
+  orange: 'border-neo-mustard',
+  purple: 'border-neo-blue',
+};
+---
+
+<section id="impact" class="section-anchor">
+  <div class="max-w-[1600px] mx-auto neo-border-l neo-border-r">
+    <!-- Section Header -->
+    <div class="p-6 neo-border-b flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold uppercase tracking-tight">Impact & Scholars</h2>
+        <p class="text-sm font-medium text-neo-black/60 uppercase tracking-wide mt-1">Predictive Analytics & Author-Level Insights</p>
+      </div>
+      <div class="flex items-center gap-2 neo-border p-2 bg-white">
+        <span class="material-symbols-outlined text-neo-sage">analytics</span>
+        <span class="text-sm font-bold uppercase tracking-wider">Analysis Active</span>
+      </div>
+    </div>
+
+    <!-- 2x2 Structural Grid -->
+    <div class="structural-grid grid-cols-1 lg:grid-cols-12">
+      <!-- Impact Radar / Bar Chart -->
+      <div class="grid-cell lg:col-span-8 flex flex-col min-h-[400px]">
+        <div class="flex justify-between items-start mb-4 neo-border-b pb-3">
+          <h3 class="text-lg font-bold uppercase tracking-wider flex items-center gap-2">
+            <span class="material-symbols-outlined">radar</span>
+            Impact Dimensions
+          </h3>
+          <div class="text-xs font-bold uppercase bg-neo-mustard px-2 py-1 neo-border">Predictive Model</div>
+        </div>
+        {dimEntries.length > 0 ? (
+          dimEntries.length >= 3 ? (
+            /* SVG Radar for 3+ dimensions */
+            <div class="flex-1 relative flex items-center justify-center p-4">
+              <svg viewBox="0 0 300 300" class="w-full max-w-[400px] max-h-[350px]">
+                {[100, 70, 40].map(r => (
+                  <circle cx="150" cy="150" r={r} fill="none" stroke="#111111" stroke-width="0.5" opacity="0.15" />
+                ))}
+                {dimEntries.map((_d, i) => {
+                  const angle = (Math.PI * 2 * i) / dimEntries.length - Math.PI / 2;
+                  const x2 = 150 + Math.cos(angle) * 100;
+                  const y2 = 150 + Math.sin(angle) * 100;
+                  return <line x1="150" y1="150" x2={x2} y2={y2} stroke="#111111" stroke-width="0.5" opacity="0.2" />;
+                })}
+                <polygon
+                  points={dimEntries.map(([_k, v], i) => {
+                    const angle = (Math.PI * 2 * i) / dimEntries.length - Math.PI / 2;
+                    const r = (v / 100) * 100;
+                    return `${150 + Math.cos(angle) * r},${150 + Math.sin(angle) * r}`;
+                  }).join(' ')}
+                  fill="#7B8B9E" fill-opacity="0.2" stroke="#111111" stroke-width="2"
+                />
+                {dimEntries.map(([_k, v], i) => {
+                  const angle = (Math.PI * 2 * i) / dimEntries.length - Math.PI / 2;
+                  const r = (v / 100) * 100;
+                  const cx = 150 + Math.cos(angle) * r;
+                  const cy = 150 + Math.sin(angle) * r;
+                  return <circle cx={cx} cy={cy} r="4" fill="#111111" />;
+                })}
+                {dimEntries.map(([k, v], i) => {
+                  const angle = (Math.PI * 2 * i) / dimEntries.length - Math.PI / 2;
+                  const lx = 150 + Math.cos(angle) * 125;
+                  const ly = 150 + Math.sin(angle) * 125;
+                  return (
+                    <text x={lx} y={ly} text-anchor="middle" dominant-baseline="middle"
+                      font-family="'IBM Plex Mono', monospace" font-size="8" font-weight="700" fill="#111111">
+                      {k} ({v})
+                    </text>
+                  );
+                })}
+              </svg>
+            </div>
+          ) : (
+            /* Horizontal bars for 1-2 dimensions */
+            <div class="flex-1 p-6 space-y-4">
+              {dimEntries.map(([k, v]) => (
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="font-mono text-xs uppercase font-bold">{k}</span>
+                    <span class="font-mono text-xs font-bold">{v}/100</span>
+                  </div>
+                  <div class="h-6 bg-neo-parchment neo-border relative">
+                    <div class="absolute top-0 left-0 h-full bg-neo-blue" style={`width:${v}%;transition:all 0s`} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
+        ) : (
+          <div class="flex-1 flex items-center justify-center p-8 text-neo-black/40">
+            <div class="text-center font-mono text-sm">
+              <span class="material-symbols-outlined text-4xl mb-2 block">signal_cellular_no_sim</span>
+              No impact dimension data available
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Metrics Panel -->
+      <div class="grid-cell lg:col-span-4 flex flex-col bg-neo-dark text-neo-parchment">
+        <div class="neo-border-b pb-3 mb-4" style="border-color:#F4F0EB30">
+          <h3 class="text-lg font-bold uppercase tracking-wider">Metrics</h3>
+        </div>
+        <div class="border-l-4 border-neo-blue pl-4 py-2 mb-6">
+          <div class="text-xs text-neo-parchment/50 uppercase tracking-widest mb-1">Overall Impact</div>
+          <div class="text-4xl font-mono font-light">{ce.overall_impact_score}<span class="text-sm text-neo-parchment/50 ml-1">/10</span></div>
+          <div class="text-sm font-medium text-neo-sage flex items-center gap-1 mt-1">
+            <span class="material-symbols-outlined text-[14px]">trending_up</span>
+            {Number(ce.overall_impact_score) >= 8 ? 'Exceptional' : Number(ce.overall_impact_score) >= 6 ? 'Strong' : Number(ce.overall_impact_score) >= 4 ? 'Moderate' : 'Emerging'}
+          </div>
+        </div>
+        {predMetrics.length > 0 ? (
+          predMetrics.slice(0, 4).map((m: any) => (
+            <div class="py-2 neo-border-b" style="border-color:#F4F0EB15">
+              <div class="text-xs text-neo-parchment/40 uppercase font-mono tracking-widest">{m.label}</div>
+              <div class="text-xl font-mono font-bold mt-1">{m.value}</div>
+              {m.note && <div class="text-[10px] text-neo-parchment/30 mt-0.5 leading-tight">{m.note}</div>}
+            </div>
+          ))
+        ) : (
+          Object.entries((aa.impact_prediction as any)?.metrics || {}).slice(0, 4).map(([k, v]) => (
+            <div class="py-2 neo-border-b" style="border-color:#F4F0EB15">
+              <div class="text-xs text-neo-parchment/40 uppercase font-mono tracking-widest">{k.replace(/_/g, ' ')}</div>
+              <div class="text-xl font-mono font-bold mt-1">{v}</div>
+            </div>
+          ))
+        )}
+        {predCommentary && (
+          <div class="mt-auto pt-4">
+            <div class="bg-neo-sage neo-border p-3">
+              <span class="font-mono text-[10px] font-bold uppercase text-neo-black">Prediction</span>
+              <p class="font-mono text-xs text-neo-black mt-1 leading-relaxed">{predCommentary}</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Trend Chart -->
+      {trendLabels.length > 0 && (
+        <div class="grid-cell lg:col-span-12 p-6">
+          <div class="flex justify-between items-start mb-4 neo-border-b pb-3">
+            <h3 class="text-lg font-bold uppercase tracking-wider flex items-center gap-2">
+              <span class="material-symbols-outlined">timeline</span>
+              Citation Trend & Forecast
+            </h3>
+          </div>
+          <div class="relative border-l-2 border-b-2 border-neo-black p-4 flex items-end gap-2 h-40">
+            {trendLabels.map((label: string, i: number) => {
+              const actualVal = trendActual[i];
+              const forecastVal = trendForecast[i];
+              const val = actualVal ?? forecastVal ?? 0;
+              const maxVal = Math.max(...[...trendActual, ...trendForecast].filter((v: any) => v != null) as number[]);
+              const pct = maxVal > 0 ? (val / maxVal) * 100 : 0;
+              const isForecast = actualVal == null;
+              return (
+                <div class="flex-1 flex flex-col items-center gap-1">
+                  <div class="font-mono text-xs font-bold">{val}</div>
+                  <div
+                    class:list={["w-full", isForecast ? "bg-neo-mustard/50 border-2 border-dashed border-neo-mustard" : "bg-neo-blue"]}
+                    style={`height:${pct}%;min-height:4px;transition:all 0s`}
+                    title={`${label}: ${val}${isForecast ? ' (forecast)' : ''}`}
+                  />
+                  <div class="font-mono text-[10px] mt-1">{label}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      <!-- Insight Cards or Data Insights -->
+      <div class="grid-cell lg:col-span-12 p-0">
+        <div class="p-4 neo-border-b bg-white flex justify-between items-center">
+          <h3 class="text-lg font-bold uppercase tracking-wider flex items-center gap-2">
+            <span class="material-symbols-outlined">lightbulb</span>
+            Data Insights
+          </h3>
+        </div>
+        {insightCards.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-[2px] bg-neo-black">
+            {insightCards.map((card) => {
+              return (
+                <div class={`bg-white p-5 border-l-4 ${insightColorMap[card.color] || 'border-neo-black'}`}>
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="text-lg">{card.icon}</span>
+                    <span class="font-bold text-sm uppercase tracking-wide">{card.title}</span>
+                  </div>
+                  <p class="font-mono text-xs leading-relaxed text-neo-black/70">{card.body}</p>
+                </div>
+              );
+            })}
+          </div>
+        ) : dataInsights.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-[2px] bg-neo-black">
+            {dataInsights.map((insight: string) => (
+              <div class="bg-white p-4">
+                <p class="font-mono text-sm leading-relaxed">{insight}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="p-8 text-center text-neo-black/40 font-mono text-sm">No insight data available</div>
+        )}
+      </div>
+
+      <!-- Scholar Matrix -->
+      <div class="grid-cell lg:col-span-12 p-0">
+        <div class="p-6 neo-border-b bg-white flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <h3 class="text-lg font-bold uppercase tracking-wider flex items-center gap-2">
+            <span class="material-symbols-outlined">groups</span>
+            Notable Citing Scholars
+          </h3>
+          <span class="font-mono text-xs text-neo-black/50">{scholars.length} scholars identified</span>
+        </div>
+        {scholars.length > 0 ? (
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[2px] bg-neo-black p-[2px]">
+            {scholars.map((s) => {
+              const displayTier = s.tier || s.level_label || s.level || '';
+              const displayHonors = Array.isArray(s.honors) ? s.honors : (s.honors ? [s.honors] : []);
+              return (
+                <div class="bg-white p-4 h-[100px] flex flex-col justify-between cursor-pointer group hover:bg-neo-black hover:text-neo-parchment" style="transition:all 0s">
+                  <div class="flex justify-between items-start">
+                    <span class="font-bold text-sm uppercase truncate pr-2">{s.name}</span>
+                    {s.h_index && (
+                      <span class="bg-neo-black text-white text-[10px] font-bold px-1.5 py-0.5 group-hover:bg-neo-parchment group-hover:text-neo-black" style="transition:all 0s">
+                        h:{s.h_index}
+                      </span>
+                    )}
+                  </div>
+                  <div class="text-xs text-neo-black/60 uppercase tracking-wide truncate group-hover:text-neo-parchment/60" style="transition:all 0s">
+                    {s.institution || 'Unknown Institution'}
+                  </div>
+                  <div class="flex gap-1 flex-wrap">
+                    {displayTier && (
+                      <span class="font-mono text-[9px] bg-neo-mustard/20 text-neo-black px-1 group-hover:bg-neo-mustard group-hover:text-neo-black" style="transition:all 0s">
+                        {displayTier}
+                      </span>
+                    )}
+                    {displayHonors.slice(0, 2).map((h: string) => (
+                      <span class="font-mono text-[9px] bg-neo-sage/20 text-neo-black px-1 group-hover:bg-neo-sage group-hover:text-neo-black" style="transition:all 0s">
+                        {h}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="p-8 text-center font-mono text-sm text-neo-black/40">
+            <span class="material-symbols-outlined text-3xl mb-2 block">person_off</span>
+            No scholar profile data available for this report
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

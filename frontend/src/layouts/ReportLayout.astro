@@ -1,0 +1,56 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+</head>
+<body class="min-h-screen overflow-x-hidden flex flex-col font-sans bg-neo-parchment text-neo-black">
+  <!-- Navigation -->
+  <nav class="neo-border-b bg-neo-parchment sticky top-0 z-50">
+    <div class="max-w-[1600px] mx-auto px-8 flex items-center justify-between py-3">
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-3">
+          <div class="w-6 h-6 bg-neo-black flex items-center justify-center">
+            <svg class="w-4 h-4 text-neo-parchment" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path clip-rule="evenodd" d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor" fill-rule="evenodd" />
+            </svg>
+          </div>
+          <span class="font-mono text-lg font-bold tracking-tighter uppercase">CitationQA Report</span>
+        </div>
+        <div class="hidden md:flex items-center gap-1 font-mono text-xs font-bold uppercase tracking-wide">
+          <a href="#dashboard" class="px-3 py-2 hover:bg-neo-black hover:text-neo-parchment" style="transition:all 0s">Dashboard</a>
+          <a href="#gallery" class="px-3 py-2 hover:bg-neo-black hover:text-neo-parchment" style="transition:all 0s">Citations</a>
+          <a href="#demographics" class="px-3 py-2 hover:bg-neo-black hover:text-neo-parchment" style="transition:all 0s">Demographics</a>
+          <a href="#impact" class="px-3 py-2 hover:bg-neo-black hover:text-neo-parchment" style="transition:all 0s">Impact</a>
+          <a href="#graph" class="px-3 py-2 hover:bg-neo-black hover:text-neo-parchment" style="transition:all 0s">Graph</a>
+        </div>
+      </div>
+      <div class="font-mono text-xs text-neo-black/50 uppercase">
+        Powered by CitationQA
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-1">
+    <slot />
+  </main>
+
+  <footer class="neo-border-t bg-neo-dark text-neo-parchment py-6">
+    <div class="max-w-[1600px] mx-auto px-8 flex justify-between items-center font-mono text-xs uppercase tracking-widest">
+      <span>Citation Quality Analyzer</span>
+      <span class="text-neo-parchment/50">Generated {new Date().toISOString().split('T')[0]}</span>
+    </div>
+  </footer>
+</body>
+</html>

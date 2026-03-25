@@ -1,0 +1,34 @@
+---
+import ReportLayout from '../layouts/ReportLayout.astro';
+import Dashboard from '../components/Dashboard.astro';
+import CitationGallery from '../components/CitationGallery.tsx';
+import DemographicsGeo from '../components/DemographicsGeo.astro';
+import ImpactScholars from '../components/ImpactScholars.astro';
+import KnowledgeGraph from '../components/KnowledgeGraph.tsx';
+import reportData from '../data/report.json';
+import type { ReportData } from '../lib/types';
+import '../styles/global.css';
+
+const raw = reportData as unknown as Partial<ReportData>;
+const data: ReportData = {
+  paper: raw.paper || { title: 'Untitled', authors: [], year: 0, venue: '', total_citations: 0 },
+  comprehensive_eval: raw.comprehensive_eval || {
+    overall_impact_score: 'N/A', overall_summary: '', key_findings: [],
+    citation_quality_distribution: {}, depth_distribution: {}, sentiment_distribution: {},
+  },
+  evaluations: raw.evaluations || [],
+  advanced_analytics: raw.advanced_analytics || {},
+  scholar_profiles: raw.scholar_profiles || [],
+  graph_data: raw.graph_data || { nodes: [], edges: [] },
+  generated_at: raw.generated_at,
+  task_id: raw.task_id,
+};
+---
+
+<ReportLayout title={`CitationQA Report: ${data.paper.title}`}>
+  <Dashboard data={data} />
+  <CitationGallery client:visible evaluations={data.evaluations} />
+  <DemographicsGeo analytics={data.advanced_analytics} />
+  <ImpactScholars data={data} />
+  <KnowledgeGraph client:visible graphData={data.graph_data} />
+</ReportLayout>

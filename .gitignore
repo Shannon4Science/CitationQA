@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+*.so
+venv/
+.venv/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.astro/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs & artifacts
+backend/logs/
+backend/charts/
+backend/downloads/
+backend/reports/
+*.log
+
+# Temp
+_temp_*/
+
+# Design assets
+stitch/
+
+# Environment / secrets
+.env
+.env.*
+backend/config.py
