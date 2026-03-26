@@ -1,7 +1,8 @@
 """
 Centralized backend configuration.
 
-Copy this file to config.py and fill in your API keys.
+API keys are left empty by default.
+Configure them via the frontend settings panel or edit this file directly.
 """
 
 APP_SETTINGS = {
@@ -15,14 +16,14 @@ PROXY_SETTINGS = {
 
 LLM_SETTINGS = {
     "model": "gpt-4o",
-    "api_key": "YOUR_LLM_API_KEY",
+    "api_key": "",
     "primary_base_url": "https://api.openai.com/v1",
     "secondary_base_url": "",
     "search_timeout": 180,
 }
 
 SERPAPI_SETTINGS = {
-    "api_key": "YOUR_SERPAPI_KEY",
+    "api_key": "",
     "base_url": "https://serpapi.com/search",
 }
 

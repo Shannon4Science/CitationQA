@@ -78,10 +78,16 @@ setup_logging()
 logger = logging.getLogger("citation_analyzer.app")
 
 # ===== Flask应用 =====
+BASE_PATH = os.environ.get("BASE_PATH", "").rstrip("/")
+
 app = Flask(__name__,
             template_folder=os.path.join(BASE_DIR, "templates"),
             static_folder=os.path.join(BASE_DIR, "static"))
 CORS(app)
+
+@app.context_processor
+def inject_base_path():
+    return dict(base_path=BASE_PATH)
 
 # ===== 任务存储 =====
 tasks = {}  # task_id -> TaskData
