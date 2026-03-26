@@ -36,3 +36,4 @@ stitch/
 # Environment / secrets
 .env
 .env.*
+backend/.config_overrides.json
