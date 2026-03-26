@@ -12,27 +12,30 @@ from backend.config import ADSABS_SETTINGS
 
 logger = logging.getLogger("citation_analyzer.adsabs_api")
 
-ADS_API_KEY = ADSABS_SETTINGS["api_key"]
-BASE_URL = ADSABS_SETTINGS["base_url"]
+def _ads_key() -> str:
+    return ADSABS_SETTINGS["api_key"]
+
+def _ads_base() -> str:
+    return ADSABS_SETTINGS["base_url"]
 
 
 def set_api_key(key: str):
-    global ADS_API_KEY
-    ADS_API_KEY = key
+    ADSABS_SETTINGS["api_key"] = key
 
 
 def _make_request(endpoint: str, params: dict, timeout: int = 30) -> Optional[dict]:
     """发送ADS API请求"""
-    if not ADS_API_KEY:
+    key = _ads_key()
+    if not key:
         logger.warning("[ADS] API key未设置")
         return None
     
-    headers = {"Authorization": f"Bearer {ADS_API_KEY}"}
+    headers = {"Authorization": f"Bearer {key}"}
     
     for attempt in range(3):
         try:
             with httpx.Client(timeout=timeout) as client:
-                resp = client.get(f"{BASE_URL}{endpoint}", params=params, headers=headers)
+                resp = client.get(f"{_ads_base()}{endpoint}", params=params, headers=headers)
                 if resp.status_code == 200:
                     return resp.json()
                 elif resp.status_code == 429:
