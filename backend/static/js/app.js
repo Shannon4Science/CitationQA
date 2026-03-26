@@ -1,6 +1,8 @@
 // Citation Quality Analyzer - Neo-Brutalist Frontend
 // SSE + task restore + config panel
 
+const BASE_PATH = document.querySelector('meta[name="base-path"]')?.content || '';
+
 let currentTaskId = null;
 let allCitations = [];
 let eventSource = null;
@@ -69,7 +71,7 @@ async function saveSettings() {
 // ===== View Detailed Report =====
 function viewDetailedReport() {
     if (!currentTaskId) return;
-    window.open(`/api/report/${currentTaskId}`, '_blank');
+    window.open(`${BASE_PATH}/api/report/${currentTaskId}`, '_blank');
 }
 
 // ===== 页面加载时恢复任务 =====
@@ -131,7 +133,7 @@ async function apiCall(endpoint, method = 'GET', body = null) {
     };
     if (body) options.body = JSON.stringify(body);
 
-    const response = await fetch(endpoint, options);
+    const response = await fetch(BASE_PATH + endpoint, options);
     if (!response.ok) {
         const err = await response.json().catch(() => ({ error: 'Unknown error' }));
         throw new Error(err.error || `HTTP ${response.status}`);
@@ -334,7 +336,7 @@ function connectSSE(taskId) {
         eventSource.close();
     }
 
-    eventSource = new EventSource(`/api/stream/${taskId}`);
+    eventSource = new EventSource(`${BASE_PATH}/api/stream/${taskId}`);
 
     eventSource.onmessage = function(event) {
         try {
@@ -854,7 +856,7 @@ function startNewAnalysis() {
 // ===== Download =====
 function downloadReport(format) {
     if (!currentTaskId) return;
-    window.open(`/api/download/${currentTaskId}/${format}`, '_blank');
+    window.open(`${BASE_PATH}/api/download/${currentTaskId}/${format}`, '_blank');
 }
 
 // ===== Utilities =====
