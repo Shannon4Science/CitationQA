@@ -1,3 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect x="4" y="4" width="24" height="24" rx="2" ry="2" transform="rotate(45 16 16)" fill="#111111"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="4" fill="#111111"/>
+  <path d="M29.5 16L16 29.5L2.5 16L16 2.5L29.5 16ZM8.8 14h14.4L16 6.8L8.8 14Z" fill="#F4F0EB" fill-rule="evenodd" clip-rule="evenodd"/>
 </svg>
