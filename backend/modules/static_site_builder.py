@@ -128,6 +128,11 @@ def build_static_site():
         raise FileNotFoundError(f"Frontend directory not found: {FRONTEND_DIR}")
 
     logger.info("Running Astro build...")
+    build_env = os.environ.copy()
+    base_path = os.environ.get("BASE_PATH", "")
+    if base_path:
+        build_env["ASTRO_BASE"] = base_path
+
     result = subprocess.run(
         "npm run build",
         cwd=FRONTEND_DIR,
@@ -135,6 +140,7 @@ def build_static_site():
         text=True,
         timeout=120,
         shell=True,
+        env=build_env,
     )
     if result.returncode != 0:
         combined = (result.stdout or "") + "\n" + (result.stderr or "")
