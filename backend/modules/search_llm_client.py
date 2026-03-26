@@ -11,15 +11,12 @@ import time
 from typing import Any, Dict, List, Optional, Tuple
 
 from openai import OpenAI
-from backend.modules.llm_config import DEFAULT_SEARCH_TIMEOUT, build_search_llm_config
+from backend.modules.llm_config import get_search_timeout, build_search_llm_config
 
 logger = logging.getLogger("citation_analyzer.search_llm")
 
-SEARCH_LLM_CONFIG = build_search_llm_config()
-
 MAX_RETRIES = 3
 RETRY_DELAY = 5
-SEARCH_TIMEOUT = DEFAULT_SEARCH_TIMEOUT
 NO_RESULT_SENTINEL = "<检索失败或无引用>"
 
 SCHOLAR_INFO_PROMPT = """你是一名极其谨慎的学者身份核验助手。你的任务是联网搜索并确认“论文作者”信息，绝不能把同名学者、期刊、会议、实验室主页或错误机构误判成目标作者。
@@ -155,11 +152,11 @@ class SearchLLMClient:
     """搜索型 LLM 客户端 — 用于需要联网搜索能力的分析任务"""
 
     def __init__(self):
-        self.config = SEARCH_LLM_CONFIG.copy()
+        self.config = build_search_llm_config()
         self.client = OpenAI(
             base_url=self.config["base_url"],
             api_key=self.config["api_key"],
-            timeout=SEARCH_TIMEOUT,
+            timeout=get_search_timeout(),
             max_retries=0,
         )
 

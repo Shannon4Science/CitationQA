@@ -12,16 +12,18 @@ from backend.config import SEMANTIC_SCHOLAR_SETTINGS
 
 logger = logging.getLogger("citation_analyzer.semantic_scholar")
 
-BASE_URL = SEMANTIC_SCHOLAR_SETTINGS["base_url"]
-RATE_LIMIT_DELAY = 1.0  # 未认证用户限制更严格
-DEFAULT_API_KEY = SEMANTIC_SCHOLAR_SETTINGS.get("api_key", "")
+RATE_LIMIT_DELAY = 1.0
+
+
+def _s2_base_url() -> str:
+    return SEMANTIC_SCHOLAR_SETTINGS["base_url"]
 
 
 class SemanticScholarClient:
     """Semantic Scholar API 客户端"""
 
     def __init__(self, api_key: Optional[str] = None):
-        api_key = api_key if api_key is not None else DEFAULT_API_KEY
+        api_key = api_key if api_key is not None else SEMANTIC_SCHOLAR_SETTINGS.get("api_key", "")
         headers = {"User-Agent": "CitationQualityAnalyzer/1.0"}
         if api_key:
             headers["x-api-key"] = api_key
@@ -53,7 +55,7 @@ class SemanticScholarClient:
         
         try:
             # 先尝试精确匹配
-            response = self.client.get(f"{BASE_URL}/paper/search/match", params={"query": title, "fields": params["fields"]})
+            response = self.client.get(f"{_s2_base_url()}/paper/search/match", params={"query": title, "fields": params["fields"]})
             if response.status_code == 200:
                 data = response.json()
                 # API可能返回 {"data": [...]} 或直接返回 {"paperId": ...}
@@ -67,7 +69,7 @@ class SemanticScholarClient:
             
             # 退回到相关性搜索
             self._rate_limit()
-            response = self.client.get(f"{BASE_URL}/paper/search", params={**params, "limit": 5})
+            response = self.client.get(f"{_s2_base_url()}/paper/search", params={**params, "limit": 5})
             if response.status_code == 200:
                 data = response.json()
                 if data.get("data"):
@@ -82,7 +84,7 @@ class SemanticScholarClient:
             elif response.status_code == 429:
                 logger.warning(f"[SemanticScholar] 速率限制，等待重试...")
                 time.sleep(3)
-                response = self.client.get(f"{BASE_URL}/paper/search", params={**params, "limit": 5})
+                response = self.client.get(f"{_s2_base_url()}/paper/search", params={**params, "limit": 5})
                 if response.status_code == 200:
                     data = response.json()
                     if data.get("data"):
@@ -102,7 +104,7 @@ class SemanticScholarClient:
         fields = "paperId,title,abstract,year,citationCount,authors,externalIds,url,venue,openAccessPdf,publicationTypes,influentialCitationCount,tldr"
         
         try:
-            response = self.client.get(f"{BASE_URL}/paper/{paper_id}", params={"fields": fields})
+            response = self.client.get(f"{_s2_base_url()}/paper/{paper_id}", params={"fields": fields})
             if response.status_code == 200:
                 return response.json()
             logger.warning(f"[SemanticScholar] 获取论文详情失败: HTTP {response.status_code}")
@@ -130,7 +132,7 @@ class SemanticScholarClient:
                     "limit": batch_limit
                 }
                 
-                response = self.client.get(f"{BASE_URL}/paper/{paper_id}/citations", params=params)
+                response = self.client.get(f"{_s2_base_url()}/paper/{paper_id}/citations", params=params)
                 if response.status_code != 200:
                     logger.warning(f"[SemanticScholar] 获取被引失败: HTTP {response.status_code}")
                     break

@@ -22,9 +22,6 @@ from backend.modules.search_llm_client import SearchLLMClient
 
 logger = logging.getLogger("citation_analyzer.llm_evaluator")
 
-# LLM配置 - 优先使用用户指定的服务，备用OpenAI
-LLM_CONFIGS = build_llm_configs()
-
 # 重试配置
 MAX_RETRIES = 5
 RETRY_DELAY = 6  # 秒
@@ -316,7 +313,7 @@ class LLMEvaluator:
 
     def _init_client(self):
         """初始化LLM客户端，尝试多个配置，验证返回内容非空"""
-        for config in LLM_CONFIGS:
+        for config in build_llm_configs():
             if not config.get("base_url") or not config.get("api_key"):
                 continue
             try:

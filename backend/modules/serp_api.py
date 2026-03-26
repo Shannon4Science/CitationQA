@@ -13,25 +13,28 @@ from backend.config import SERPAPI_SETTINGS
 
 logger = logging.getLogger("citation_analyzer.serp_api")
 
-SERP_API_KEY = SERPAPI_SETTINGS["api_key"]
-BASE_URL = SERPAPI_SETTINGS["base_url"]
+def _serp_key() -> str:
+    return SERPAPI_SETTINGS["api_key"]
+
+def _serp_base() -> str:
+    return SERPAPI_SETTINGS["base_url"]
 
 
 def set_api_key(key: str):
-    global SERP_API_KEY
-    SERP_API_KEY = key
+    SERPAPI_SETTINGS["api_key"] = key
 
 
 def _make_request(params: dict, timeout: int = 30) -> Optional[dict]:
     """发送SerpAPI请求"""
-    if not SERP_API_KEY:
+    key = _serp_key()
+    if not key:
         logger.warning("[SerpAPI] API key未设置")
         return None
-    params["api_key"] = SERP_API_KEY
+    params["api_key"] = key
     for attempt in range(3):
         try:
             with httpx.Client(timeout=timeout) as client:
-                resp = client.get(BASE_URL, params=params)
+                resp = client.get(_serp_base(), params=params)
                 if resp.status_code == 200:
                     return resp.json()
                 elif resp.status_code == 429:

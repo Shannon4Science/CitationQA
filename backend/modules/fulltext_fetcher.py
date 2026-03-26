@@ -32,14 +32,15 @@ logger = logging.getLogger("citation_analyzer.fulltext")
 DOWNLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "downloads")
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
-# MinerU API配置
-MINERU_API_TOKEN = MINERU_SETTINGS["api_token"]
-MINERU_API_BASE = MINERU_SETTINGS["base_url"]
+def _mineru_token() -> str:
+    return MINERU_SETTINGS["api_token"]
+
+def _mineru_base() -> str:
+    return MINERU_SETTINGS["base_url"]
 
 
 def set_mineru_token(token: str):
-    global MINERU_API_TOKEN
-    MINERU_API_TOKEN = token
+    MINERU_SETTINGS["api_token"] = token
 
 
 class FulltextFetcher:
@@ -1107,7 +1108,7 @@ class FulltextFetcher:
         Returns:
             解析后的markdown文本
         """
-        if not MINERU_API_TOKEN:
+        if not _mineru_token():
             logger.warning("[Fulltext] MinerU API token未设置，跳过MinerU解析")
             return None
 
@@ -1117,7 +1118,7 @@ class FulltextFetcher:
             # 创建解析任务
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {MINERU_API_TOKEN}"
+                "Authorization": f"Bearer {_mineru_token()}"
             }
 
             model_version = "MinerU-HTML" if file_type == "html" else "vlm"
@@ -1127,7 +1128,7 @@ class FulltextFetcher:
             }
 
             resp = self.client.post(
-                f"{MINERU_API_BASE}/extract/task",
+                f"{_mineru_base()}/extract/task",
                 headers=headers,
                 json=data,
                 timeout=30
@@ -1149,7 +1150,7 @@ class FulltextFetcher:
             for attempt in range(60):  # 最多等5分钟
                 time.sleep(5)
                 resp = self.client.get(
-                    f"{MINERU_API_BASE}/extract/task/{task_id}",
+                    f"{_mineru_base()}/extract/task/{task_id}",
                     headers=headers,
                     timeout=30
                 )
