@@ -588,9 +588,13 @@ def view_report(task_id):
         export_report_json(task)
         build_static_site()
         dist_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "dist")
-        index_path = os.path.join(dist_path, "index.html")
-        if os.path.isfile(index_path):
-            return send_file(index_path)
+        candidates = [
+            os.path.join(dist_path, BASE_PATH.strip("/"), "index.html") if BASE_PATH else None,
+            os.path.join(dist_path, "index.html"),
+        ]
+        for index_path in candidates:
+            if index_path and os.path.isfile(index_path):
+                return send_file(index_path)
         return jsonify({"error": "构建产物未找到"}), 500
     except Exception as e:
         logger.exception(f"Report build failed for task {task_id}")
