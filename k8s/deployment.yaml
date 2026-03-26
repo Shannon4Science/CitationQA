@@ -23,3 +23,33 @@ spec:
           env:
             - name: BASE_PATH
               value: "/cqa"
+            - name: LLM_MODEL
+              valueFrom:
+                secretKeyRef:
+                  name: cqa-secret
+                  key: LLM_MODEL
+            - name: LLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cqa-secret
+                  key: LLM_API_KEY
+            - name: LLM_PRIMARY_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cqa-secret
+                  key: LLM_PRIMARY_BASE_URL
+            - name: LLM_SECONDARY_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cqa-secret
+                  key: LLM_SECONDARY_BASE_URL
+            - name: SERPAPI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cqa-secret
+                  key: SERPAPI_API_KEY
+            - name: MINERU_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cqa-secret
+                  key: MINERU_API_TOKEN

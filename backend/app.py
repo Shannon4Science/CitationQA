@@ -30,6 +30,70 @@ from backend.modules.static_site_builder import export_report_json, build_static
 import backend.config as backend_config
 from backend.config import APP_SETTINGS
 
+# ===== 环境变量覆盖 & 持久化 =====
+_ENV_MAP = {
+    "LLM_MODEL":            (backend_config.LLM_SETTINGS, "model"),
+    "LLM_API_KEY":          (backend_config.LLM_SETTINGS, "api_key"),
+    "LLM_PRIMARY_BASE_URL": (backend_config.LLM_SETTINGS, "primary_base_url"),
+    "LLM_SECONDARY_BASE_URL": (backend_config.LLM_SETTINGS, "secondary_base_url"),
+    "LLM_SEARCH_TIMEOUT":   (backend_config.LLM_SETTINGS, "search_timeout"),
+    "SERPAPI_API_KEY":       (backend_config.SERPAPI_SETTINGS, "api_key"),
+    "S2_API_KEY":            (backend_config.SEMANTIC_SCHOLAR_SETTINGS, "api_key"),
+    "ADSABS_API_KEY":        (backend_config.ADSABS_SETTINGS, "api_key"),
+    "MINERU_API_TOKEN":      (backend_config.MINERU_SETTINGS, "api_token"),
+    "FALLBACK_PROXY":        (backend_config.PROXY_SETTINGS, "fallback_proxy"),
+}
+
+def _apply_env_overrides():
+    for env_var, (settings_dict, key) in _ENV_MAP.items():
+        val = os.environ.get(env_var)
+        if val:
+            settings_dict[key] = int(val) if key == "search_timeout" else val
+
+_CONFIG_JSON = os.path.join(os.path.dirname(__file__), ".config_overrides.json")
+
+def _load_persisted_config():
+    """Load config overrides saved by the frontend settings panel."""
+    if not os.path.exists(_CONFIG_JSON):
+        return
+    try:
+        with open(_CONFIG_JSON, "r") as f:
+            data = json.load(f)
+        mapping = {
+            "llm": backend_config.LLM_SETTINGS,
+            "serpapi": backend_config.SERPAPI_SETTINGS,
+            "semantic_scholar": backend_config.SEMANTIC_SCHOLAR_SETTINGS,
+            "adsabs": backend_config.ADSABS_SETTINGS,
+            "mineru": backend_config.MINERU_SETTINGS,
+            "proxy": backend_config.PROXY_SETTINGS,
+        }
+        for section, settings_dict in mapping.items():
+            if section in data:
+                for k, v in data[section].items():
+                    if v is not None and v != "":
+                        settings_dict[k] = v
+    except Exception:
+        pass
+
+def _persist_config():
+    """Persist current config state to JSON for reload across restarts."""
+    snapshot = {
+        "llm": dict(backend_config.LLM_SETTINGS),
+        "serpapi": dict(backend_config.SERPAPI_SETTINGS),
+        "semantic_scholar": dict(backend_config.SEMANTIC_SCHOLAR_SETTINGS),
+        "adsabs": dict(backend_config.ADSABS_SETTINGS),
+        "mineru": dict(backend_config.MINERU_SETTINGS),
+        "proxy": dict(backend_config.PROXY_SETTINGS),
+    }
+    try:
+        with open(_CONFIG_JSON, "w") as f:
+            json.dump(snapshot, f, indent=2)
+    except Exception:
+        pass
+
+_load_persisted_config()
+_apply_env_overrides()
+
 # ===== 配置 =====
 BASE_DIR = os.path.dirname(__file__)
 LOG_DIR = os.path.join(BASE_DIR, "logs")
@@ -284,6 +348,7 @@ def update_config():
         if proxy.get("fallback_proxy") is not None:
             backend_config.PROXY_SETTINGS["fallback_proxy"] = proxy["fallback_proxy"]
 
+    _persist_config()
     return jsonify({"status": "ok"})
 
 
