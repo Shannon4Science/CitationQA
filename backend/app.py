@@ -601,6 +601,11 @@ def view_report(task_id):
         return jsonify({"error": f"报告构建失败: {str(e)}"}), 500
 
 
+@app.route('/favicon.svg')
+def favicon():
+    return send_file(os.path.join(BASE_DIR, "static", "favicon.svg"))
+
+
 @app.route('/_astro/<path:filename>')
 def astro_assets(filename):
     """Serve Astro build assets from /_astro/ path."""
