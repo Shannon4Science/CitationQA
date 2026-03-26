@@ -129,7 +129,7 @@ def build_static_site():
 
     logger.info("Running Astro build...")
     result = subprocess.run(
-        ["npm", "run", "build"],
+        "npm run build",
         cwd=FRONTEND_DIR,
         capture_output=True,
         text=True,
@@ -137,8 +137,9 @@ def build_static_site():
         shell=True,
     )
     if result.returncode != 0:
-        logger.error(f"Astro build failed:\n{result.stderr}")
-        raise RuntimeError(f"Astro build failed: {result.stderr[-500:]}")
+        combined = (result.stdout or "") + "\n" + (result.stderr or "")
+        logger.error(f"Astro build failed (code {result.returncode}):\n{combined}")
+        raise RuntimeError(f"Astro build failed: {combined.strip()[-800:]}")
 
     logger.info("Astro build completed successfully")
     return DIST_DIR
