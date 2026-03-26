@@ -23,8 +23,7 @@ RUN cd frontend && npm install --registry https://registry.npmmirror.com
 
 COPY . .
 
-RUN cp -n backend/config.py.example backend/config.py && \
-    mkdir -p backend/logs backend/charts backend/downloads backend/reports
+RUN mkdir -p backend/logs backend/charts backend/downloads backend/reports
 
 EXPOSE 5000
 

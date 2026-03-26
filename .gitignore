@@ -36,4 +36,3 @@ stitch/
 # Environment / secrets
 .env
 .env.*
-backend/config.py
