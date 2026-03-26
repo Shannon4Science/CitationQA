@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cqa
-          image: docker.shlab.tech/public/cqa:main-42700
+          image: docker.shlab.tech/public/cqa:main-42704
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
