@@ -36,12 +36,22 @@ function closeSettings() {
     document.removeEventListener('keydown', settingsEscHandler);
 }
 
-function closeSettingsOnOverlay(e) {
-    if (e.target === document.getElementById('settings-modal')) closeSettings();
+let _overlayMouseDownTarget = null;
+
+function setupOverlayClose() {
+    const modal = document.getElementById('settings-modal');
+    modal.addEventListener('mousedown', (e) => { _overlayMouseDownTarget = e.target; });
+    modal.addEventListener('mouseup', (e) => {
+        if (e.target === modal && _overlayMouseDownTarget === modal) closeSettings();
+        _overlayMouseDownTarget = null;
+    });
 }
 
 function settingsEscHandler(e) {
-    if (e.key === 'Escape') closeSettings();
+    if (e.key === 'Escape') {
+        e.preventDefault();
+        closeSettings();
+    }
 }
 
 async function saveSettings() {
@@ -79,6 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('paper-title').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') startAnalysis();
     });
+
+    setupOverlayClose();
 
     // 尝试恢复之前的任务
     const savedTaskId = localStorage.getItem('currentTaskId');
